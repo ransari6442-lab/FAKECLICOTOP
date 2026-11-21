@@ -15,6 +15,7 @@ export default async function handler(req, res) {
   const tgUser = joinEvent.from || joinEvent.new_chat_member?.user || {};
   const fullName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "Telegram User";
   const username = tgUser.username ? `@${tgUser.username}` : "No Username";
+  const usedInviteLink = joinEvent.invite_link?.invite_link || "";
 
   try {
     const pageRes = await fetch(`${SUPABASE_URL}/rest/v1/landing_pages?slug=eq.${slug}&select=*`, {
@@ -24,11 +25,24 @@ export default async function handler(req, res) {
     const page = pages[0];
     if (!page) return res.status(200).json({ status: "page_not_found" });
 
-    const logRes = await fetch(`${SUPABASE_URL}/rest/v1/click_logs?page_slug=eq.${slug}&is_joined=eq.false&order=created_at.desc&limit=1`, {
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
-    });
-    const logs = await logRes.json();
-    const latestClick = logs[0];
+    // 1. Try exact match using the unique invite_link generated for this user
+    let latestClick = null;
+    if (usedInviteLink) {
+      const exactRes = await fetch(`${SUPABASE_URL}/rest/v1/click_logs?page_slug=eq.${slug}&invite_link=eq.${encodeURIComponent(usedInviteLink)}&is_joined=eq.false&limit=1`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const exactLogs = await exactRes.json();
+      latestClick = exactLogs[0] || null;
+    }
+
+    // 2. Fallback to latest unjoined click if direct link was used
+    if (!latestClick) {
+      const logRes = await fetch(`${SUPABASE_URL}/rest/v1/click_logs?page_slug=eq.${slug}&is_joined=eq.false&order=created_at.desc&limit=1`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const logs = await logRes.json();
+      latestClick = logs[0] || null;
+    }
 
     const eventTime = Math.floor(Date.now() / 1000);
     const userData = {
