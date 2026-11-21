@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   const { slug } = req.query;
   const update = req.body;
-  const SUPABASE_URL = "https://famlauimdobiijxomey.supabase.co";
+  const SUPABASE_URL = "https://famlbufmdobiiljxomey.supabase.co";
   const SUPABASE_KEY = "sb_publishable__JJOo6JOGVNIAcaOCjsAPQ_kKljVdZY";
 
   const joinEvent = update.chat_join_request || (update.chat_member && update.chat_member.new_chat_member?.status === "member" ? update.chat_member : null);
