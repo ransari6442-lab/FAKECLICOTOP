@@ -31,6 +31,7 @@
     const params = new URLSearchParams(window.location.search);
     const slug = params.get("id");
     const fbclid = params.get("fbclid") || "";
+    const campaignName = params.get("utm_campaign") || params.get("campaign") || "Direct / Organic";
     let pageData = null;
 
     async function initPage() {
@@ -75,6 +76,7 @@
 
       await db.from("click_logs").insert([{
         page_slug: slug,
+        campaign_name: campaignName,
         fbclid: fbclid,
         fbp: fbp,
         user_agent: navigator.userAgent
