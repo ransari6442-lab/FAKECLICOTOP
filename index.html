@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Telegram Landing Page Builder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #090d16; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+  </style>
+</head>
+<body class="min-h-screen p-4 pb-16">
+  <div class="max-w-md mx-auto">
+    <!-- Header -->
+    <div class="text-center my-5">
+      <span class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">2026 Verified Anti-Bot System</span>
+      <h1 class="text-2xl font-extrabold mt-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Premium Landing Page</h1>
+      <p class="text-xs text-slate-400 mt-1">Best Offer • Join Telegram This • Zero Fake Clicks</p>
+    </div>
+
+    <!-- Setup Form -->
+    <div class="glass rounded-2xl p-5 space-y-3.5 shadow-xl">
+      <div>
+        <label class="text-xs text-slate-300 font-medium">Landing Page / Channel Name</label>
+        <input id="lpName" type="text" placeholder="उदा. Ziya Malik Official" class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+      </div>
+      <div>
+        <label class="text-xs text-slate-300 font-medium">Profile DP Image URL (Optional)</label>
+        <input id="dpUrl" type="url" placeholder="https://i.ibb.co/..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+      </div>
+      <div>
+        <label class="text-xs text-slate-300 font-medium">Telegram Private Invite Link</label>
+        <input id="tgLink" type="url" placeholder="https://t.me/+..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+      </div>
+      <div>
+        <label class="text-xs text-slate-300 font-medium">Telegram Bot API Token</label>
+        <input id="botToken" type="text" placeholder="123456789:ABCdefGHI..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+      </div>
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="text-xs text-slate-300 font-medium">Meta Pixel ID</label>
+          <input id="pixelId" type="text" placeholder="1234567890123" class="w-full mt-1 px-3 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+        </div>
+        <div>
+          <label class="text-xs text-slate-300 font-medium">Meta CAPI Token</label>
+          <input id="capiToken" type="text" placeholder="EAABsbCS..." class="w-full mt-1 px-3 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+        </div>
+      </div>
+
+      <button id="checkBtn" onclick="verifyAndShowThemes()" class="w-full mt-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-95 active:scale-[0.99] transition shadow-lg shadow-cyan-500/20">
+        Check Connection & Generate 8 Themes
+      </button>
+      <p id="statusMsg" class="text-center text-xs hidden"></p>
+    </div>
+
+    <!-- 8 Aesthetic Themes Section (Hidden until Check Connection) -->
+    <div id="themesSection" class="hidden mt-7">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-base font-bold text-white">अपनी पसंद की Theme चुनें (8 Designs)</h2>
+        <span class="text-[11px] text-cyan-400">Mobile Ready</span>
+      </div>
+      <div id="themesGrid" class="grid grid-cols-1 gap-4"></div>
+    </div>
+  </div> <script>
+    const themes = [
+      { name: "1. Midnight Gold VIP", bg: "bg-gradient-to-br from-zinc-900 via-neutral-900 to-amber-950 border-amber-500/40", btn: "bg-gradient-to-r from-amber-400 to-yellow-600 text-black", ring: "ring-amber-400" },
+      { name: "2. Cyber Neon Dark", bg: "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 border-cyan-400/40", btn: "bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950", ring: "ring-cyan-400" },
+      { name: "3. Emerald Royal", bg: "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 border-emerald-400/40", btn: "bg-gradient-to-r from-emerald-400 to-teal-500 text
+<script>
+    const themes = [
+      { name: "1. Midnight Gold VIP", bg: "bg-gradient-to-br from-zinc-900 via-neutral-900 to-amber-950 border-amber-500/40", btn: "bg-gradient-to-r from-amber-400 to-yellow-600 text-black", ring: "ring-amber-400" },
+      { name: "2. Cyber Neon Dark", bg: "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 border-cyan-400/40", btn: "bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950", ring: "ring-cyan-400" },
+      { name: "3. Emerald Royal", bg: "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 border-emerald-400/40", btn: "bg-gradient-to-r from-emerald-400 to-teal-500 text
+
+  
