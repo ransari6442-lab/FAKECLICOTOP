@@ -60,7 +60,7 @@
           <img src="${data.dp_url}" alt="DP" class="w-24 h-24 rounded-full mx-auto object-cover ring-4 ${t.ring} p-0.5 shadow-lg" />
           <h1 class="text-2xl font-extrabold mt-4">${data.channel_name}</h1>
           <p class="text-xs opacity-80 mt-2">Join Now Telegram • Get Latest Updates</p>
-          <button onclick="handleJoinClick()" class="w-full mt-6 py-3.5 rounded-2xl font-extrabold text-sm shadow-lg active:scale-95 transition ${t.btn}">
+          <button id="joinBtn" onclick="handleJoinClick()" class="w-full mt-6 py-3.5 rounded-2xl font-extrabold text-sm shadow-lg active:scale-95 transition ${t.btn}">
             JOIN TELEGRAM CHANNEL →
           </button>
           <p class="text-[10px] opacity-60 mt-4">Best Offer • Verified Official Link</p>
@@ -71,18 +71,30 @@
     async function handleJoinClick() {
       if (!pageData || navigator.webdriver) return;
 
+      const btn = document.getElementById("joinBtn");
+      btn.disabled = true;
+      btn.textContent = "Generating VIP Invite Link...";
+
       const fbpMatch = document.cookie.match(/_fbp=([^;]+)/);
       const fbp = fbpMatch ? fbpMatch[1] : "";
 
-      await db.from("click_logs").insert([{
-        page_slug: slug,
-        campaign_name: campaignName,
-        fbclid: fbclid,
-        fbp: fbp,
-        user_agent: navigator.userAgent
-      }]);
-
-      window.location.href = pageData.tg_invite_link;
+      try {
+        const res = await fetch("/api/create-invite", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug,
+            campaignName,
+            fbclid,
+            fbp,
+            userAgent: navigator.userAgent
+          })
+        });
+        const result = await res.json();
+        window.location.href = result.invite_link || pageData.tg_invite_link;
+      } catch (e) {
+        window.location.href = pageData.tg_invite_link;
+      }
     }
 
     initPage();
