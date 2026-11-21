@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -23,55 +22,136 @@
     <!-- Setup Form -->
     <div class="glass rounded-2xl p-5 space-y-3.5 shadow-xl">
       <div>
-        <label class="text-xs text-slate-300 font-medium">Landing Page / Channel Name</label>
+        <label class="text-xs text-slate-300 font-medium">Landing Page Name (खाली छोड़ने पर चैनल नाम लेगा)</label>
         <input id="lpName" type="text" placeholder="उदा. Ziya Malik Official" class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
       </div>
-      <div>
-        <label class="text-xs text-slate-300 font-medium">Profile DP Image URL (Optional)</label>
-        <input id="dpUrl" type="url" placeholder="https://i.ibb.co/..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
-      </div>
+
       <div>
         <label class="text-xs text-slate-300 font-medium">Telegram Private Invite Link</label>
         <input id="tgLink" type="url" placeholder="https://t.me/+..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
       </div>
+
       <div>
-        <label class="text-xs text-slate-300 font-medium">Telegram Bot API Token</label>
+        <label class="text-xs text-slate-300 font-medium">Telegram Channel ID / @Username (Auto DP के लिए)</label>
+        <input id="chatId" type="text" placeholder="-1001234567890 या @channelusername" class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+      </div>
+
+      <div>
+        <label class="text-xs text-slate-300 font-medium">Telegram Bot API Token (बॉट चैनल में Admin होना चाहिए)</label>
         <input id="botToken" type="text" placeholder="123456789:ABCdefGHI..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
       </div>
+
       <div class="grid grid-cols-2 gap-2.5">
         <div>
           <label class="text-xs text-slate-300 font-medium">Meta Pixel ID</label>
-          <input id="pixelId" type="text" placeholder="1234567890123" class="w-full mt-1 px-3 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+          <input id="pixelId" type="text" placeholder="1234567890123" class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
         </div>
         <div>
           <label class="text-xs text-slate-300 font-medium">Meta CAPI Token</label>
-          <input id="capiToken" type="text" placeholder="EAABsbCS..." class="w-full mt-1 px-3 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
+          <input id="capiToken" type="text" placeholder="EAABsbCS..." class="w-full mt-1 px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:border-cyan-400 outline-none" />
         </div>
       </div>
 
       <button id="checkBtn" onclick="verifyAndShowThemes()" class="w-full mt-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-95 active:scale-[0.99] transition shadow-lg shadow-cyan-500/20">
-        Check Connection & Generate 8 Themes
+        Check Connection & Auto-Fetch DP
       </button>
       <p id="statusMsg" class="text-center text-xs hidden"></p>
     </div>
 
-    <!-- 8 Aesthetic Themes Section (Hidden until Check Connection) -->
+    <!-- 8 Aesthetic Themes Section -->
     <div id="themesSection" class="hidden mt-7">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-base font-bold text-white">अपनी पसंद की Theme चुनें (8 Designs)</h2>
-        <span class="text-[11px] text-cyan-400">Mobile Ready</span>
+        <span class="text-[11px] text-cyan-400">Auto DP Attached</span>
       </div>
       <div id="themesGrid" class="grid grid-cols-1 gap-4"></div>
     </div>
-  </div> <script>
+  </div>
+  <script>
     const themes = [
       { name: "1. Midnight Gold VIP", bg: "bg-gradient-to-br from-zinc-900 via-neutral-900 to-amber-950 border-amber-500/40", btn: "bg-gradient-to-r from-amber-400 to-yellow-600 text-black", ring: "ring-amber-400" },
       { name: "2. Cyber Neon Dark", bg: "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 border-cyan-400/40", btn: "bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950", ring: "ring-cyan-400" },
-      { name: "3. Emerald Royal", bg: "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 border-emerald-400/40", btn: "bg-gradient-to-r from-emerald-400 to-teal-500 text
-<script>
-    const themes = [
-      { name: "1. Midnight Gold VIP", bg: "bg-gradient-to-br from-zinc-900 via-neutral-900 to-amber-950 border-amber-500/40", btn: "bg-gradient-to-r from-amber-400 to-yellow-600 text-black", ring: "ring-amber-400" },
-      { name: "2. Cyber Neon Dark", bg: "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 border-cyan-400/40", btn: "bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950", ring: "ring-cyan-400" },
-      { name: "3. Emerald Royal", bg: "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 border-emerald-400/40", btn: "bg-gradient-to-r from-emerald-400 to-teal-500 text
+      { name: "3. Emerald Royal", bg: "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 border-emerald-400/40", btn: "bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950", ring: "ring-emerald-400" },
+      { name: "4. Crimson Velvet", bg: "bg-gradient-to-br from-rose-950 via-red-950 to-neutral-950 border-rose-500/40", btn: "bg-gradient-to-r from-rose-500 to-red-600 text-white", ring: "ring-rose-500" },
+      { name: "5. Royal Purple Glow", bg: "bg-gradient-to-br from-purple-950 via-fuchsia-950 to-slate-950 border-fuchsia-400/40", btn: "bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white", ring: "ring-fuchsia-400" },
+      { name: "6. Minimalist Snow Light", bg: "bg-gradient-to-br from-white via-slate-50 to-blue-50 border-slate-300 text-slate-900", btn: "bg-blue-600 text-white", ring: "ring-blue-600" },
+      { name: "7. Sunset Ember", bg: "bg-gradient-to-br from-orange-950 via-amber-950 to-stone-950 border-orange-400/40", btn: "bg-gradient-to-r from-orange-500 to-amber-500 text-white", ring: "ring-orange-400" },
+      { name: "8. Deep Ocean Glass", bg: "bg-gradient-to-br from-sky-950 via-blue-950 to-slate-950 border-sky-400/40", btn: "bg-gradient-to-r from-sky-400 to-indigo-500 text-slate-950", ring: "ring-sky-400" }
+    ];
+
+    async function verifyAndShowThemes() {
+      let customName = document.getElementById("lpName").value.trim();
+      const tgLink = document.getElementById("tgLink").value.trim();
+      const chatId = document.getElementById("chatId").value.trim();
+      const botToken = document.getElementById("botToken").value.trim();
+      const pixelId = document.getElementById("pixelId").value.trim();
+      const capiToken = document.getElementById("capiToken").value.trim();
+      const status = document.getElementById("statusMsg");
+
+      if (!tgLink  !chatId  !botToken  !pixelId  !capiToken) {
+        status.textContent = "कृपया सभी ज़रूरी फील्ड्स (Link, Channel ID, Bot Token, Pixel, CAPI) भरें।";
+        status.className = "text-center text-xs text-rose-400 mt-2 block";
+        return;
+      }
+
+      status.textContent = "Bot से चैनल की DP और नाम फ़ेच हो रहा है...";
+      status.className = "text-center text-xs text-cyan-400 mt-2 block";
+
+      try {
+        // 1. Verify Bot
+        const meRes = await fetch(https://api.telegram.org/bot${botToken}/getMe);
+        const meData = await meRes.json();
+        if (!meData.ok) throw new Error("Bot API Token गलत है।");
+
+        // 2. Fetch Channel Info & DP
+        const chatRes = await fetch(https://api.telegram.org/bot${botToken}/getChat?chat_id=${encodeURIComponent(chatId)});
+        const chatData = await chatRes.json();
+        if (!chatData.ok) throw new Error("बॉट इस चैनल में Admin नहीं है या Channel ID गलत है।");
+
+        const finalName = customName  chatData.result.title  "VIP Telegram Channel";
+        let dpUrl = "https://cdn-icons-png.flaticon.com/512/2111/2111646.png";
+
+        if (chatData.result.photo && chatData.result.photo.big_file_id) {
+          const fileId = chatData.result.photo.big_file_id;
+          const fileRes = await fetch(https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId});
+          const fileData = await fileRes.json();
+          if (fileData.ok && fileData.result.file_path) {
+            dpUrl = https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path};
+          }
+        }
+        status.textContent = Connected: @${meData.result.username} • DP Attached!;
+        status.className = "text-center text-xs text-emerald-400 mt-2 block";
+        renderThemes(finalName, dpUrl);
+      } catch (err) {
+        status.textContent = err.message || "कनेक्शन में समस्या आई है।";
+        status.className = "text-center text-xs text-rose-400 mt-2 block";
+      }
+    }
+
+    function renderThemes(name, dp) {
+      const grid = document.getElementById("themesGrid");
+      grid.innerHTML = themes.map((t, idx) => 
+        <div class="${t.bg} border rounded-2xl p-5 text-center shadow-lg transition hover:scale-[1.01]">
+          <div class="flex justify-between items-center text-[10px] opacity-75 mb-3">
+            <span>${t.name}</span>
+            <span>✔ Certified 2026</span>
+          </div>
+          <img src="${dp}" alt="Channel DP" class="w-20 h-20 rounded-full mx-auto object-cover ring-2 ${t.ring} p-0.5 shadow-md" />
+          <h3 class="text-lg font-extrabold mt-3">${name}</h3>
+          <p class="text-xs opacity-80 mt-1">Join Now Telegram • Get Latest Updates</p>
+          <button onclick="selectTheme(${idx})" class="w-full mt-4 py-2.5 rounded-xl font-bold text-xs shadow-md ${t.btn}">
+            Select & Generate Link →
+          </button>
+        </div>
+      ).join("");
+      document.getElementById("themesSection").classList.remove("hidden");
+    }
+
+    function selectTheme(index) {
+      alert("Theme #" + (index + 1) + " सिलेक्ट हो गई! अगले स्टेप में हम इसे Supabase से जोड़ेंगे ताकि Public Link + Private Analytics Link + Password जनरेट हो सके।");
+    }
+  </script>
+</body>
+</html>
 
   
