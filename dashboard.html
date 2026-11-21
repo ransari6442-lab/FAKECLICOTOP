@@ -6,86 +6,153 @@
   <title>Pro Campaign & Member Analytics</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background-color: #050811;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.10) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.08) 0px, transparent 50%);
+      color: #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .glass-card {
+      background: rgba(13, 19, 33, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .neon-cyan { box-shadow: 0 0 25px -5px rgba(34, 211, 238, 0.22); }
+    .neon-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25); }
+    .neon-blue { box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.22); }
+  </style>
 </head>
-<body class="min-h-screen bg-[#070b14] text-slate-100 p-4 md:p-8 font-sans">
-  <!-- Login Screen -->
-  <div id="loginBox" class="max-w-md mx-auto mt-16 bg-slate-900/90 border border-slate-800 rounded-3xl p-7 shadow-2xl">
+<body class="min-h-screen p-4 md:p-8 antialiased selection:bg-cyan-500/30">
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginBox" class="max-w-md mx-auto mt-16 glass-card border border-cyan-500/30 rounded-3xl p-8 shadow-2xl neon-cyan">
     <div class="text-center">
-      <span class="px-3 py-1 text-[11px] font-semibold rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Private Admin Portal</span>
-      <h1 class="text-2xl font-extrabold mt-3 text-white">Analytics Dashboard</h1>
-      <p class="text-xs text-slate-400 mt-1">पासवर्ड डालकर कैंपेन रिज़ल्ट और लाइव जॉइनर्स देखें</p>
+      <span class="inline-flex items-center gap-1.5 px-3.5 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 shadow-md">
+        ⚡ Private Admin Portal
+      </span>
+      <h1 class="text-2xl font-extrabold mt-4 text-white tracking-tight">Analytics Command Center</h1>
+      <p class="text-xs text-slate-400 mt-1.5">अपना पासवर्ड डालकर लाइव कैंपेन रिज़ल्ट और मेंबर्स देखें</p>
     </div>
-    <div class="mt-6 space-y-3">
-      <input id="passInput" type="password" placeholder="Enter Dashboard Password" class="w-full px-4 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-sm outline-none focus:border-cyan-400" />
-      <button onclick="unlockDashboard()" class="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-lg">Unlock Live Analytics →</button>
-      <p id="errText" class="text-xs text-rose-400 text-center hidden"></p>
+
+    <div class="mt-6 space-y-3.5">
+      <input id="passInput" type="password" placeholder="Enter Dashboard Password" onkeypress="if(event.key==='Enter') unlockDashboard()"
+        class="w-full px-4 py-3.5 rounded-xl bg-slate-950/90 border border-slate-700/80 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition" />
+      <button onclick="unlockDashboard()" 
+        class="w-full py-3.5 rounded-xl font-extrabold text-sm bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 text-slate-950 hover:opacity-95 active:scale-[0.99] transition shadow-lg shadow-cyan-500/25">
+        Unlock Live Analytics →
+      </button>
+      <p id="errText" class="text-xs text-rose-400 text-center font-medium hidden"></p>
     </div>
   </div>
 
-  <!-- Main Dashboard -->
-  <div id="statsBox" class="hidden max-w-4xl mx-auto space-y-6">
-    <!-- Top Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/80 border border-slate-800 rounded-2xl p-5">
-      <div class="flex items-center gap-3.5">
-        <img id="chDp" src="" class="w-12 h-12 rounded-full object-cover ring-2 ring-cyan-400" />
-        <div>
-          <h2 id="chName" class="text-xl font-extrabold text-white"></h2>
-          <p class="text-xs text-emerald-400">● Live Meta CAPI & Anti-Bot Tracking Active</p>
+  <!-- MAIN ANALYTICS DASHBOARD -->
+  <div id="statsBox" class="hidden max-w-5xl mx-auto space-y-6">
+
+    <!-- TOP HEADER BAR -->
+    <div class="glass-card border border-slate-800/90 rounded-3xl p-5 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+      <div>
+        <span class="inline-block px-3.5 py-1 text-xs font-extrabold rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 shadow-sm mb-2.5">
+          Private Admin Portal
+        </span>
+        <div class="flex items-center gap-3.5">
+          <img id="chDp" src="" alt="Channel DP" class="w-12 h-12 rounded-2xl object-cover ring-2 ring-cyan-400/80 shadow-md hidden" />
+          <div>
+            <h2 class="text-xl md:text-2xl font-black text-white tracking-tight leading-tight">
+              <span id="chName" class="text-cyan-300">Channel</span> <span class="text-white">Analytics Dashboard</span>
+            </h2>
+            <p class="text-xs font-medium text-emerald-400 flex items-center gap-2 mt-1">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              Live Meta CAPI & Anti-Bot Tracking Active
+            </p>
+          </div>
         </div>
       </div>
-      <button onclick="unlockDashboard()" class="px-4 py-2.5 rounded-xl text-xs font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 transition">
-        ↻ Refresh Live Stats
-      </button>
-    </div>
 
-    <!-- Big Overview Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-gradient-to-br from-slate-900 to-indigo-950/60 p-6 rounded-2xl border border-indigo-500/30 shadow-lg">
-        <p class="text-xs font-medium text-indigo-300 uppercase tracking-wider">Running Campaigns</p>
-        <p id="activeCampaignCount" class="text-4xl font-black text-white mt-2">0</p>
-        <p class="text-[11px] text-slate-400 mt-1">Active UTM / Ad Sources</p>
-      </div>
-      <div class="bg-gradient-to-br from-slate-900 to-cyan-950/60 p-6 rounded-2xl border border-cyan-500/30 shadow-lg">
-        <p class="text-xs font-medium text-cyan-300 uppercase tracking-wider">Total Landing Visits</p>
-        <p id="visitCount" class="text-4xl font-black text-cyan-400 mt-2">0</p>
-        <p class="text-[11px] text-slate-400 mt-1">Filtered Human Traffic</p>
-      </div>
-      <div class="bg-gradient-to-br from-slate-900 to-emerald-950/60 p-6 rounded-2xl border border-emerald-500/30 shadow-lg">
-        <p class="text-xs font-medium text-emerald-300 uppercase tracking-wider">Confirmed Joins (CAPI)</p>
-        <p id="joinCount" class="text-4xl font-black text-emerald-400 mt-2">0</p>
-        <p class="text-[11px] text-slate-400 mt-1">Verified Telegram Members</p>
+      <div class="flex items-center gap-2.5 self-start sm:self-center">
+        <span id="lastUpdated" class="text-[11px] text-slate-400 hidden md:inline">Auto-sync: 15s</span>
+        <button id="refreshBtn" onclick="unlockDashboard(true)" 
+          class="px-4 py-2.5 rounded-xl text-xs font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-400/40 hover:bg-cyan-500/20 active:scale-95 transition flex items-center gap-1.5 shadow-md">
+          <span id="refreshIcon">↻</span> Refresh Live Stats
+        </button>
       </div>
     </div>
 
-    <!-- Campaign Performance Table -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl">
+    <!-- 3 BIG METRIC CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+      <!-- Card 1: Running Campaigns -->
+      <div class="glass-card rounded-3xl p-6 border-2 border-cyan-500/40 neon-cyan text-center relative overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/10 rounded-full blur-2xl"></div>
+        <p class="text-sm font-bold text-slate-200 tracking-wide">Running Campaigns</p>
+        <p id="activeCampaignCount" class="text-5xl font-black text-white my-2.5 tracking-tight">0</p>
+        <p class="text-xs text-slate-400 font-medium">Active UTM / Ad Sources</p>
+      </div>
+
+      <!-- Card 2: Total Landing Visits -->
+      <div class="glass-card rounded-3xl p-6 border-2 border-blue-500/40 neon-blue text-center relative overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl"></div>
+        <p class="text-sm font-bold text-slate-200 tracking-wide">Total Landing Visits</p>
+        <p id="visitCount" class="text-5xl font-black text-white my-2.5 tracking-tight">0</p>
+        <p class="text-xs text-slate-400 font-medium">Filtered Human Traffic</p>
+      </div>
+
+      <!-- Card 3: Confirmed Joins (CAPI) -->
+      <div class="glass-card rounded-3xl p-6 border-2 border-emerald-400/60 neon-emerald text-center relative overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/15 rounded-full blur-2xl"></div>
+        <p class="text-sm font-bold text-emerald-200 tracking-wide">Confirmed Joins (CAPI)</p>
+        <p id="joinCount" class="text-5xl font-black text-emerald-400 my-2.5 tracking-tight">0</p>
+        <p class="text-xs text-emerald-300/80 font-medium">Verified Telegram Members</p>
+      </div>
+    </div>
+
+    <!-- CAMPAIGN-WISE RESULTS TABLE -->
+    <div class="glass-card border-2 border-cyan-500/30 rounded-3xl p-5 md:p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold text-white">📊 Campaign-Wise Results (किस कैंपेन से कितने रिज़ल्ट)</h3>
-        <span class="text-[11px] text-slate-400">Auto-Grouped</span>
+        <div class="flex items-center gap-2.5">
+          <span class="text-lg">📊</span>
+          <h3 class="text-base md:text-lg font-extrabold text-white">Campaign-Wise Results</h3>
+        </div>
+        <span class="px-3 py-1 text-[11px] font-semibold rounded-full bg-slate-800/90 text-cyan-300 border border-slate-700">
+          Auto-Grouped
+        </span>
       </div>
+
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="border-b border-slate-800 text-[11px] text-slate-400 uppercase">
-              <th class="py-3 px-3">Campaign Name</th>
-              <th class="py-3 px-3 text-center">Button Clicks</th>
-              <th class="py-3 px-3 text-center">Confirmed Joins</th>
-              <th class="py-3 px-3 text-right">Conversion %</th>
+            <tr class="border-b border-slate-700/80 text-xs font-bold text-slate-300">
+              <th class="py-3.5 px-3">Campaign Name</th>
+              <th class="py-3.5 px-3 text-center">Button Clicks</th>
+              <th class="py-3.5 px-3 text-center">Confirmed Joins</th>
+              <th class="py-3.5 px-3 text-right">Conversion Rate</th>
             </tr>
           </thead>
-          <tbody id="campaignTableBody" class="divide-y divide-slate-800/60 text-sm"></tbody>
+          <tbody id="campaignTableBody" class="divide-y divide-slate-800/70 text-sm"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- Live Telegram Joiners Feed -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl">
+    <!-- RECENT TELEGRAM MEMBERS FEED -->
+    <div class="glass-card border-2 border-emerald-500/30 rounded-3xl p-5 md:p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold text-white">👤 Recent Telegram Members (लाइव जॉइन करने वाले मेंबर्स)</h3>
-        <span class="text-[11px] text-emerald-400">Latest 50 Joins</span>
+        <div class="flex items-center gap-2.5">
+          <span class="text-lg">👤</span>
+          <h3 class="text-base md:text-lg font-extrabold text-white">Recent Telegram Members</h3>
+        </div>
+        <span class="px-3 py-1 text-[11px] font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+          Live Verified Feed
+        </span>
       </div>
-      <div id="membersList" class="space-y-2.5"></div>
+
+      <div id="membersList" class="space-y-3"></div>
     </div>
+
   </div>
 
   <script>
@@ -93,13 +160,35 @@
     const SUPABASE_KEY = "sb_publishable__JJOo6JOGVNIAcaOCjsAPQ_kKljVdZY";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const slug = new URLSearchParams(window.location.search).get("id");
+    let autoRefreshTimer = null;
 
-    async function unlockDashboard() {
+    const avatarColors = [
+      "from-cyan-500 to-blue-600",
+      "from-emerald-500 to-teal-600",
+      "from-amber-500 to-orange-600",
+      "from-purple-500 to-indigo-600",
+      "from-pink-500 to-rose-600"
+    ];
+
+    async function unlockDashboard(isManualRefresh = false) {
       const pass = document.getElementById("passInput").value.trim();
       const err = document.getElementById("errText");
-      if (!slug || !pass) return;
+      if (!slug || !pass) {
+        err.textContent = "कृपया पासवर्ड डालें।";
+        err.classList.remove("hidden");
+        return;
+      }
+
+      if (isManualRefresh) {
+        document.getElementById("refreshIcon").classList.add("animate-spin");
+      }
 
       const { data: page, error } = await db.from("landing_pages").select("*").eq("slug", slug).single();
+      
+      if (isManualRefresh) {
+        setTimeout(() => document.getElementById("refreshIcon").classList.remove("animate-spin"), 400);
+      }
+
       if (error || !page || page.dashboard_password !== pass) {
         err.textContent = "गलत पासवर्ड या अमान्य लिंक!";
         err.classList.remove("hidden");
@@ -129,17 +218,24 @@
 
       const tbody = document.getElementById("campaignTableBody");
       if (campaignNames.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-xs text-slate-500">अभी तक किसी कैंपेन से डेटा नहीं आया है।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-xs text-slate-400">अभी तक किसी कैंपेन से डेटा नहीं आया है।</td></tr>`;
       } else {
         tbody.innerHTML = campaignNames.map(name => {
           const c = campaignMap[name];
-          const rate = c.clicks > 0 ? Math.round((c.joins / c.clicks) * 100) : 0;
+          const rate = c.clicks > 0 ? Math.min(100, Math.round((c.joins / c.clicks) * 100)) : 0;
           return `
-            <tr class="hover:bg-slate-800/40">
-              <td class="py-3 px-3 font-semibold text-cyan-300">${name}</td>
-              <td class="py-3 px-3 text-center text-slate-300">${c.clicks}</td>
-              <td class="py-3 px-3 text-center font-bold text-emerald-400">${c.joins}</td>
-              <td class="py-3 px-3 text-right text-xs text-amber-300 font-semibold">${rate}%</td>
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-4 px-3 font-bold text-cyan-300">${name}</td>
+              <td class="py-4 px-3 text-center font-semibold text-white">${c.clicks}</td>
+              <td class="py-4 px-3 text-center font-extrabold text-emerald-400">${c.joins}</td>
+              <td class="py-4 px-3 text-right">
+                <div class="inline-flex items-center justify-end gap-2.5">
+                  <div class="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden hidden sm:block">
+                    <div class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full" style="width: ${rate}%"></div>
+                  </div>
+                  <span class="font-bold text-white text-xs">${rate}%</span>
+                </div>
+              </td>
             </tr>
           `;
         }).join("");
@@ -149,19 +245,35 @@
       const joinedMembers = allLogs.filter(l => l.is_joined).slice(0, 50);
       const membersDiv = document.getElementById("membersList");
       if (joinedMembers.length === 0) {
-        membersDiv.innerHTML = `<p class="text-center text-xs text-slate-500 py-5">अभी तक कोई मेंबर जॉइन नहीं हुआ है।</p>`;
+        membersDiv.innerHTML = `<p class="text-center text-xs text-slate-400 py-6">अभी तक कोई मेंबर जॉइन नहीं हुआ है।</p>`;
       } else {
-        membersDiv.innerHTML = joinedMembers.map(m => {
-          const timeStr = new Date(m.joined_at || m.created_at).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" });
+        membersDiv.innerHTML = joinedMembers.map((m, i) => {
+          const displayName = m.tg_name || "Telegram Member";
+          const initial = displayName.charAt(0).toUpperCase();
+          const grad = avatarColors[i % avatarColors.length];
+          const timeStr = new Date(m.joined_at || m.created_at).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+          const dateStr = new Date(m.joined_at || m.created_at).toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
           return `
-            <div class="flex items-center justify-between bg-slate-950/90 border border-slate-800/80 rounded-xl p-3.5">
-              <div>
-                <p class="text-sm font-bold text-white">${m.tg_name || "Telegram Member"} <span class="text-xs font-normal text-cyan-400">${m.tg_username || ""}</span></p>
-                <p class="text-[11px] text-slate-400 mt-0.5">Campaign: <span class="text-amber-300 font-medium">${m.campaign_name || "Direct"}</span></p>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-950/75 hover:bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 transition">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-br ${grad} flex items-center justify-center font-black text-white text-base shadow-md shrink-0">
+                  ${initial}
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-white leading-snug">${displayName}</p>
+                  <p class="text-xs text-slate-400 font-medium">${m.tg_username || "Verified User"}</p>
+                </div>
               </div>
-              <div class="text-right">
-                <span class="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Joined ✔</span>
-                <p class="text-[10px] text-slate-500 mt-1">${timeStr}</p>
+
+              <div class="text-xs text-slate-300 sm:text-center">
+                Campaign: <span class="font-bold text-amber-300">${m.campaign_name || "Direct / Organic"}</span>
+              </div>
+
+              <div class="flex sm:flex-col items-center sm:items-end justify-between gap-1.5">
+                <span class="px-3 py-1 text-[11px] font-bold rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-400/40">
+                  Joined ✔
+                </span>
+                <span class="text-[11px] text-slate-400 font-medium">${dateStr}, ${timeStr}</span>
               </div>
             </div>
           `;
@@ -172,9 +284,18 @@
       document.getElementById("loginBox").classList.add("hidden");
       document.getElementById("statsBox").classList.remove("hidden");
       document.getElementById("chName").textContent = page.channel_name;
-      document.getElementById("chDp").src = page.dp_url;
+      if (page.dp_url) {
+        const dpEl = document.getElementById("chDp");
+        dpEl.src = page.dp_url;
+        dpEl.classList.remove("hidden");
+      }
       document.getElementById("visitCount").textContent = page.total_visits || 0;
       document.getElementById("joinCount").textContent = page.confirmed_joins || 0;
+
+      // Start 15-second live auto-refresh once unlocked
+      if (!autoRefreshTimer) {
+        autoRefreshTimer = setInterval(() => unlockDashboard(false), 15000);
+      }
     }
   </script>
 </body>
