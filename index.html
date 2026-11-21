@@ -79,7 +79,7 @@
   </div>
 
   <script>
-    const SUPABASE_URL = "https://famlbufmdobiijxomey.supabase.co";
+    const SUPABASE_URL = "https://famlaufmdobiijxomey.supabase.co";
     const SUPABASE_KEY = "sb_publishable__JJOo6JOGVNIAcaOCjsAPQ_kKljVdZY";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -177,6 +177,7 @@
       if (!verifiedData) return;
       const status = document.getElementById("statusMsg");
       status.textContent = "आपका Public Link और Private Dashboard तैयार हो रहा है...";
+      status.className = "text-center text-xs text-cyan-400 mt-2 block";
 
       const slug = "vip-" + Math.random().toString(36).substring(2, 8);
       const password = Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -210,6 +211,7 @@
       document.getElementById("resultBox").classList.remove("hidden");
       document.getElementById("resultBox").scrollIntoView({ behavior: "smooth" });
       status.textContent = "बधाई हो! नीचे आपके दोनों लिंक्स और पासवर्ड तैयार हैं।";
+      status.className = "text-center text-xs text-emerald-400 mt-2 block";
     }
   </script>
 </body>
