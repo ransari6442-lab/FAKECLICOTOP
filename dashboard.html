@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Analytics Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+    <h1 class="text-xl font-extrabold text-cyan-400 text-center">Private Analytics Access</h1>
+    <p class="text-xs text-slate-400 text-center mt-1">अपना पासवर्ड डालकर लाइव विज़िट्स और कन्फर्म जॉइन देखें</p>
+
+    <div id="loginBox" class="mt-5 space-y-3">
+      <input id="passInput" type="password" placeholder="Enter Dashboard Password" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm outline-none focus:border-cyan-400" />
+      <button onclick="unlockDashboard()" class="w-full py-3 rounded-xl font-bold text-sm bg-cyan-500 text-slate-950">Unlock Stats</button>
+      <p id="errText" class="text-xs text-rose-400 text-center hidden"></p>
+    </div>
+
+    <div id="statsBox" class="hidden mt-6 space-y-4">
+      <div class="text-center">
+        <h2 id="chName" class="text-lg font-bold"></h2>
+        <span class="text-xs text-emerald-400">● Live Anti-Bot Tracking Active</span>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+          <p class="text-xs text-slate-400">Total Page Visits</p>
+          <p id="visitCount" class="text-2xl font-extrabold text-cyan-400 mt-1">0</p>
+        </div>
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+          <p class="text-xs text-slate-400">Confirmed Joins (CAPI)</p>
+          <p id="joinCount" class="text-2xl font-extrabold text-emerald-400 mt-1">0</p>
+        </div>
+      </div>
+      <button onclick="unlockDashboard()" class="w-full py-2.5 rounded-xl text-xs bg-slate-800 hover:bg-slate-700">Refresh Live Data</button>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://famlbufmdobiijxomey.supabase.co";
+    const SUPABASE_KEY = "sb_publishable__JJOo6JOGVNIAcaOCjsAPQ_kKljVdZY";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const slug = new URLSearchParams(window.location.search).get("id");
+
+    async function unlockDashboard() {
+      const pass = document.getElementById("passInput").value.trim();
+      const err = document.getElementById("errText");
+      if (!slug || !pass) return;
+
+      const { data, error } = await db.from("landing_pages").select("*").eq("slug", slug).single();
+      if (error  !data  data.dashboard_password !== pass) {
+        err.textContent = "गलत पासवर्ड या अमान्य लिंक!";
+        err.classList.remove("hidden");
+        return;
+      }
+
+      err.classList.add("hidden");
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("statsBox").classList.remove("hidden");
+      document.getElementById("chName").textContent = data.channel_name;
+      document.getElementById("visitCount").textContent = data.total_visits || 0;
+      document.getElementById("joinCount").textContent = data.confirmed_joins || 0;
+    }
+  </script>
+</body>
+</html>
