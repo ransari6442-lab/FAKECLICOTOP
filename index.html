@@ -56,7 +56,7 @@
     <div id="resultBox" class="hidden mt-6 glass rounded-2xl p-5 border border-emerald-500/40 space-y-3">
       <h3 class="text-base font-bold text-emerald-400">🎉 आपका Landing Page तैयार है!</h3>
       <div>
-        <p class="text-[11px] text-slate-400">1. Public Ad Landing Page Link (इसे Meta Ads में लगाएं):</p>
+        <p class="text-[11px] text-slate-400">1. Meta Ads Ready Link (सीधे Ads Manager में पेस्ट करें — Campaign Name Auto-Track होगा):</p>
         <input id="publicLinkOut" readonly onclick="this.select()" class="w-full mt-1 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-xs text-cyan-300" />
       </div>
       <div>
@@ -176,7 +176,7 @@
     async function createLandingPage(themeIndex) {
       if (!verifiedData) return;
       const status = document.getElementById("statusMsg");
-      status.textContent = "आपका Public Link और Private Dashboard तैयार हो रहा है...";
+      status.textContent = "आपका Meta Ads Link और Private Dashboard तैयार हो रहा है...";
       status.className = "text-center text-xs text-cyan-400 mt-2 block";
 
       const slug = "vip-" + Math.random().toString(36).substring(2, 8);
@@ -205,7 +205,7 @@
       const webhookUrl = `${baseUrl}/api/webhook?slug=${slug}`;
       await fetch(`https://api.telegram.org/bot${verifiedData.botToken}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=["chat_join_request","chat_member"]`);
 
-      document.getElementById("publicLinkOut").value = `${baseUrl}/page.html?id=${slug}`;
+      document.getElementById("publicLinkOut").value = `${baseUrl}/page.html?id=${slug}&utm_campaign={{campaign.name}}`;
       document.getElementById("dashLinkOut").value = `${baseUrl}/dashboard.html?id=${slug}`;
       document.getElementById("dashPassOut").value = password;
       document.getElementById("resultBox").classList.remove("hidden");
