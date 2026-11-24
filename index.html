@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ROJIEADS SaaS — Zero Fake Click Page Generator</title>
+  <title>ROJIEADS Studio — Zero Fake Click Page Generator</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -13,8 +13,6 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
     }
-
-    /* Ambient Animated Orbs */
     .bg-orb {
       position: fixed;
       border-radius: 9999px;
@@ -27,99 +25,60 @@
       0% { transform: translate(0, 0) scale(1); }
       100% { transform: translate(30px, -25px) scale(1.12); }
     }
-
-    /* Glass Card */
     .glass-panel {
-      background: rgba(15, 23, 42, 0.72);
+      background: rgba(15, 23, 42, 0.76);
       backdrop-filter: blur(18px);
-      border: 1px solid rgba(148, 163, 184, 0.14);
+      border: 1px solid rgba(148, 163, 184, 0.15);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
     }
-    .glass-panel:hover {
-      border-color: rgba(56, 189, 248, 0.35);
-    }
-
-    /* Click Ripple Effect */
-    .ripple-target {
-      position: relative;
-      overflow: hidden;
-    }
+    .ripple-target { position: relative; overflow: hidden; }
     .ripple-circle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(56, 189, 248, 0.42);
+      background: rgba(56, 189, 248, 0.45);
       transform: scale(0);
       animation: rippleAnim 0.6s linear;
       pointer-events: none;
     }
-    @keyframes rippleAnim {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-
-    /* Pop-up Toast Animation */
-    .toast-pop {
-      animation: popBounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
+    @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+    .toast-pop { animation: popBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
     @keyframes popBounce {
       0% { opacity: 0; transform: translate(-50%, -24px) scale(0.82); }
       100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
     }
-
-    /* Button Shimmer */
-    .btn-shimmer {
-      position: relative;
-      overflow: hidden;
-    }
+    .btn-shimmer { position: relative; overflow: hidden; }
     .btn-shimmer::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: -120%;
-      width: 65%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+      top: 0; left: -120%; width: 65%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
       transform: skewX(-24deg);
-      animation: shimmerMove 2.8s infinite;
+      animation: shimmerMove 2.6s infinite;
     }
-    @keyframes shimmerMove {
-      0% { left: -120%; }
-      55%, 100% { left: 150%; }
-    }
-
-    /* Card Pop Scale */
-    .theme-card {
-      transition: all 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .theme-card:active {
-      transform: scale(0.94);
-    }
+    @keyframes shimmerMove { 0% { left: -120%; } 55%, 100% { left: 150%; } }
+    .theme-card { transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .theme-card:active { transform: scale(0.94); }
   </style>
 </head>
 <body class="min-h-screen text-white pb-20 relative">
 
-  <!-- Background Glow Orbs -->
   <div class="bg-orb w-80 h-80 bg-sky-500/15 -top-16 -left-16"></div>
   <div class="bg-orb w-96 h-96 bg-indigo-600/15 bottom-10 -right-20" style="animation-delay: 2s;"></div>
 
-  <!-- Interactive Pop-Up Toast Container -->
   <div id="toastBox" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"></div>
 
-  <!-- Sticky Aesthetic Navbar -->
-  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+  <!-- Navbar -->
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
     <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-400 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-sm shadow-[0_0_20px_rgba(56,189,248,0.45)]">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-rose-500 to-indigo-600 flex items-center justify-center font-black text-sm shadow-[0_0_20px_rgba(249,115,22,0.5)]">
           ZF
         </div>
         <div>
-          <h1 class="text-sm sm:text-base font-black tracking-wide bg-gradient-to-r from-white via-sky-200 to-indigo-300 bg-clip-text text-transparent">
+          <h1 class="text-sm sm:text-base font-black tracking-wide bg-gradient-to-r from-white via-sky-200 to-amber-200 bg-clip-text text-transparent">
             ZERO FAKE CLICK STUDIO
           </h1>
-          <p class="text-[11px] text-slate-400 font-medium">Next-Gen Telegram Funnel &amp; CAPI Builder</p>
+          <p class="text-[11px] text-slate-400 font-medium">Auto Channel DP + Auto Private Request Link</p>
         </div>
       </div>
       <a href="https://t.me/ROJIEADS" target="_blank"
@@ -132,61 +91,14 @@
 
   <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6 relative z-10">
 
-    <!-- Section 1: Channel Identity -->
+    <!-- Step 1: Bot & Channel ID (Zero Extra Inputs) -->
     <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
       <div class="flex items-center justify-between">
         <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-black">01</span>
-          Channel Branding &amp; Profile
+          <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">01</span>
+          Telegram Bot &amp; Channel ID
         </h2>
-        <span class="text-[11px] font-semibold text-amber-300/80 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-400/20">Step 1 of 4</span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Channel / Brand Name *</label>
-          <input id="title" type="text" placeholder="e.g. ZIYA MALIK"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Profile Logo URL (ImgBB Direct Link) *</label>
-          <input id="imageUrl" type="url" placeholder="https://i.ibb.co/..."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-300 mb-1.5">Channel Tagline / Subtitle *</label>
-        <input id="subtitle" type="text" value="Daily live updates, high-accuracy setups & complete step-by-step guidance inside our official channel."
-               class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
-      </div>
-    </section>
-
-    <!-- Section 2: 10 Animated Full-Screen Templates -->
-    <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-black">02</span>
-          Choose Animated Full-Screen Template (10 Designs)
-        </h2>
-        <span id="selectedBadge" class="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/40 shadow-sm">
-          Active: #1 Crimson Wave
-        </span>
-      </div>
-
-      <div id="themeGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <!-- 10 Animated Theme Cards Injected Here -->
-      </div>
-    </section>
-
-    <!-- Section 3: Telegram Bot API -->
-    <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
-      <div class="flex items-center justify-between">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">03</span>
-          Telegram Bot &amp; Auto-Request Link Engine
-        </h2>
-        <span class="text-[11px] font-semibold text-emerald-300/80 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-400/20">Zero Fake Click</span>
+        <span class="text-[11px] font-semibold text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-400/20">Auto DP &amp; Auto Link</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,21 +114,49 @@
         </div>
       </div>
 
-      <div>
-        <label class="block text-xs font-bold text-slate-300 mb-1.5">Fallback / Backup Telegram Invite Link *</label>
-        <input id="fallbackLink" type="url" placeholder="https://t.me/+..."
-               class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 outline-none transition" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Custom Title (Optional — Auto-fetched from Channel)</label>
+          <input id="title" type="text" placeholder="Leave blank for auto Channel Name"
+                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Channel Tagline / Subtitle</label>
+          <input id="subtitle" type="text" value="Daily live updates, high-accuracy setups & complete step-by-step guidance inside our official channel."
+                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
+        </div>
       </div>
     </section>
 
-    <!-- Section 4: Meta Pixel & CAPI -->
+    <!-- Step 2: All 10 Animated Themes Selector + Instant Live Preview -->
+    <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-black">02</span>
+          Select Animated Full-Screen Template (10 Designs)
+        </h2>
+        <div class="flex items-center gap-2">
+          <span id="selectedBadge" class="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/40">
+            Active: #1 Crimson Fire
+          </span>
+          <a id="previewSelectedLink" href="/page.html?theme=1" target="_blank"
+             class="ripple-target text-xs font-extrabold px-3 py-1 rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300 transition">
+            Live Preview ↗
+          </a>
+        </div>
+      </div>
+
+      <div id="themeGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
+    </section>
+
+    <!-- Step 3: Meta Pixel & CAPI -->
     <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
       <div class="flex items-center justify-between">
         <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-black">04</span>
+          <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-black">03</span>
           Meta Pixel &amp; Conversions API (CAPI)
         </h2>
-        <span class="text-[11px] font-semibold text-purple-300/80 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-400/20">Server-Side</span>
+        <span class="text-[11px] font-semibold text-purple-300 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-400/20">Server-Side</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -233,25 +173,25 @@
       </div>
     </section>
 
-    <!-- Primary Generate CTA -->
-    <button id="createBtn" onclick="createLandingPage(event)"
-            class="ripple-target btn-shimmer w-full py-4.5 py-4 rounded-2xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:brightness-110 font-black text-base tracking-wider text-white shadow-[0_15px_40px_rgba(37,99,235,0.45)] cursor-pointer transition">
-      LAUNCH &amp; GENERATE LANDING PAGE 🚀
+    <!-- Generate Button -->
+    <button id="createBtn" onclick="createLandingPage()"
+            class="ripple-target btn-shimmer w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 via-rose-600 to-indigo-600 hover:brightness-110 font-black text-base tracking-wider text-white shadow-[0_15px_40px_rgba(244,63,94,0.45)] cursor-pointer transition">
+      AUTO-FETCH DP &amp; GENERATE LANDING PAGE 🚀
     </button>
 
-    <!-- Live Output Modal/Card -->
+    <!-- Generated Result Box -->
     <div id="resultBox" class="hidden glass-panel border-emerald-500/40 rounded-3xl p-6 space-y-5">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">🎉</div>
         <div>
-          <h3 class="text-lg font-black text-emerald-400">Page &amp; Auto-Invite Bot Activated!</h3>
-          <p class="text-xs text-slate-400">Your selected full-screen theme &amp; @ROJIEADS branding are live.</p>
+          <h3 class="text-lg font-black text-emerald-400">Your Animated Page &amp; Private Link Are Live!</h3>
+          <p id="autoInfoText" class="text-xs text-slate-400">Channel DP &amp; Private Join Request Link connected automatically.</p>
         </div>
       </div>
 
       <div class="space-y-3">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Member Landing Page Link (Paste in Meta Ads URL):</label>
+          <label class="block text-xs font-bold text-slate-300 mb-1">1. Member Landing Page URL (Paste in Meta Ads):</label>
           <div class="flex gap-2">
             <input id="generatedPageUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-sky-300 font-mono" />
             <button onclick="copyText('generatedPageUrl', 'Landing Page URL Copied!')" class="ripple-target px-5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs shrink-0">Copy</button>
@@ -259,7 +199,7 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Live Campaign Analytics &amp; Join Dashboard:</label>
+          <label class="block text-xs font-bold text-slate-300 mb-1">2. Live Campaign Analytics &amp; Join Dashboard URL:</label>
           <div class="flex gap-2">
             <input id="generatedDashUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-amber-300 font-mono" />
             <button onclick="copyText('generatedDashUrl', 'Dashboard URL Copied!')" class="ripple-target px-5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shrink-0">Copy</button>
@@ -278,19 +218,18 @@
     let selectedTheme = 1;
 
     const themeList = [
-      { id: 1, name: 'Crimson Wave', tag: 'Equalizer FX', grad: 'from-rose-800 via-red-950 to-black', dot: 'bg-rose-500' },
+      { id: 1, name: 'Crimson Fire', tag: 'Fire Ring + Wave', grad: 'from-rose-800 via-red-950 to-black', dot: 'bg-orange-500' },
       { id: 2, name: 'Royal VIP Card', tag: '3-Step + Grid', grad: 'from-blue-800 via-slate-900 to-black', dot: 'bg-sky-400' },
       { id: 3, name: 'Cyber Neon', tag: 'Purple & Cyan', grad: 'from-purple-800 via-indigo-950 to-black', dot: 'bg-cyan-400' },
-      { id: 4, name: 'Luxury Gold', tag: 'VIP Obsidian', grad: 'from-amber-700 via-stone-900 to-black', dot: 'bg-amber-400' },
+      { id: 4, name: 'Luxury Gold', tag: 'Fire Gold Crown', grad: 'from-amber-700 via-stone-900 to-black', dot: 'bg-amber-400' },
       { id: 5, name: 'Emerald Radar', tag: 'Spinning Ring', grad: 'from-emerald-800 via-teal-950 to-black', dot: 'bg-emerald-400' },
-      { id: 6, name: 'Sunset Fire', tag: 'Amber Burst', grad: 'from-orange-700 via-red-950 to-black', dot: 'bg-orange-400' },
+      { id: 6, name: 'Sunset Fire', tag: 'Amber Blaze', grad: 'from-orange-700 via-red-950 to-black', dot: 'bg-orange-400' },
       { id: 7, name: 'Midnight Glass', tag: 'Frost Blur', grad: 'from-cyan-800 via-slate-900 to-black', dot: 'bg-cyan-300' },
       { id: 8, name: 'Clean Sky', tag: 'Telegram Light', grad: 'from-sky-200 via-white to-slate-200', dot: 'bg-[#229ED9]' },
       { id: 9, name: 'Aurora Matrix', tag: 'Cyber Grid', grad: 'from-fuchsia-800 via-slate-950 to-teal-950', dot: 'bg-fuchsia-400' },
-      { id: 10, name: 'Ruby Crown', tag: 'Diamond Pulse', grad: 'from-pink-800 via-rose-950 to-black', dot: 'bg-pink-400' }
+      { id: 10, name: 'Ruby Fire', tag: 'Diamond Blaze', grad: 'from-pink-800 via-rose-950 to-black', dot: 'bg-pink-400' }
     ];
 
-    /* Global Click Pop-up & Ripple Feedback */
     function showPopToast(message, accent = 'sky') {
       const box = document.getElementById('toastBox');
       const colors = {
@@ -305,7 +244,7 @@
         </div>
       `;
       clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => { box.innerHTML = ''; }, 2000);
+      window._toastTimer = setTimeout(() => { box.innerHTML = ''; }, 2200);
     }
 
     document.addEventListener('click', (e) => {
@@ -322,8 +261,8 @@
         target.appendChild(circle);
         setTimeout(() => circle.remove(), 600);
       }
-      if (target.tagName === 'INPUT' && target.placeholder) {
-        showPopToast(`Editing: ${target.placeholder.replace('e.g. ', '')}`, 'sky');
+      if (target.tagName === 'INPUT' && !target.readOnly) {
+        showPopToast(`Editing ${target.previousElementSibling?.textContent?.replace(' *', '') || 'Field'}`, 'sky');
       }
     });
 
@@ -333,13 +272,16 @@
         const active = t.id === selectedTheme;
         return `
           <div onclick="selectTheme(${t.id}, '${t.name}')"
-               class="ripple-target theme-card cursor-pointer rounded-2xl p-2.5 border ${active ? 'border-sky-400 ring-2 ring-sky-400/40 bg-slate-800/90 scale-[1.03]' : 'border-slate-800 bg-slate-950/70 hover:border-slate-600'}">
+               class="ripple-target theme-card cursor-pointer rounded-2xl p-2.5 border ${active ? 'border-orange-400 ring-2 ring-orange-400/40 bg-slate-800/95 scale-[1.03]' : 'border-slate-800 bg-slate-950/70 hover:border-slate-600'}">
             <div class="h-20 rounded-xl bg-gradient-to-br ${t.grad} flex flex-col items-center justify-center p-2 mb-2 relative overflow-hidden">
               <span class="w-6 h-6 rounded-full ${t.dot} mb-1.5 shadow-lg"></span>
               <span class="w-14 h-2 rounded-full ${t.dot} opacity-90"></span>
-              ${active ? '<span class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-sky-400 text-slate-950 text-[9px] font-black">ON</span>' : ''}
+              ${active ? '<span class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-orange-400 text-slate-950 text-[9px] font-black">ON</span>' : ''}
             </div>
-            <p class="text-xs font-extrabold text-white truncate">#${t.id} ${t.name}</p>
+            <div class="flex items-center justify-between gap-1">
+              <p class="text-xs font-extrabold text-white truncate">#${t.id} ${t.name}</p>
+              <a href="/page.html?theme=${t.id}" target="_blank" onclick="event.stopPropagation()" class="text-[10px] font-bold text-sky-400 hover:underline shrink-0">View</a>
+            </div>
             <p class="text-[10px] text-slate-400 truncate">${t.tag}</p>
           </div>
         `;
@@ -349,6 +291,7 @@
     function selectTheme(id, name) {
       selectedTheme = id;
       document.getElementById('selectedBadge').textContent = `Active: #${id} ${name}`;
+      document.getElementById('previewSelectedLink').href = `/page.html?theme=${id}`;
       renderThemeCards();
       showPopToast(`Theme #${id} (${name}) Selected!`, 'sky');
     }
@@ -361,37 +304,59 @@
     }
 
     async function createLandingPage() {
-      const title = document.getElementById('title').value.trim();
-      const image_url = document.getElementById('imageUrl').value.trim();
-      const subtitle = document.getElementById('subtitle').value.trim();
       const bot_token = document.getElementById('botToken').value.trim();
       const channel_id = document.getElementById('channelId').value.trim();
-      const tg_invite_link = document.getElementById('fallbackLink').value.trim();
+      let title = document.getElementById('title').value.trim();
+      const subtitle = document.getElementById('subtitle').value.trim();
       const pixel_id = document.getElementById('pixelId').value.trim();
       const capi_token = document.getElementById('capiToken').value.trim();
 
-      if (!title || !bot_token || !channel_id || !tg_invite_link) {
-        showPopToast('Fill Channel Name, Bot Token, Channel ID & Invite Link!', 'amber');
+      if (!bot_token || !channel_id) {
+        showPopToast('Enter Bot API Token & Channel ID first!', 'amber');
         return;
       }
 
       const btn = document.getElementById('createBtn');
       btn.disabled = true;
-      btn.textContent = 'ACTIVATING BOT & DEPLOYING THEME...';
-      showPopToast('Connecting Bot & Creating Page...', 'sky');
+      btn.textContent = 'CONNECTING CHANNEL & CREATING PRIVATE LINK...';
+      showPopToast('Verifying Bot & Channel ID...', 'sky');
 
       const slug = 'vip-' + Math.random().toString(36).substring(2, 8);
       const origin = window.location.origin;
 
       try {
+        const chatRes = await fetch(`https://api.telegram.org/bot${bot_token}/getChat?chat_id=${encodeURIComponent(channel_id)}`);
+        const chatJson = await chatRes.json();
+        if (!chatJson.ok) {
+          throw new Error('Bot cannot access channel! Add your Bot as Admin in ' + channel_id);
+        }
+        if (!title) {
+          title = chatJson.result.title || 'VIP TELEGRAM';
+        }
+
+        const invRes = await fetch(`https://api.telegram.org/bot${bot_token}/createChatInviteLink`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: channel_id,
+            name: `ROJIEADS-${slug}`,
+            creates_join_request: true
+          })
+        });
+        const invJson = await invRes.json();
+        if (!invJson.ok || !invJson.result?.invite_link) {
+          throw new Error('Enable "Invite Users via Link" permission for your Bot in the channel!');
+        }
+        const autoInviteLink = invJson.result.invite_link;
+
         const { error } = await db.from('landing_pages').insert([{
           slug,
           title,
           subtitle,
-          image_url: image_url || 'https://i.ibb.co/1J2HgYpQ/IMG-20261103-094934-226.jpg',
+          image_url: `${origin}/api/channel-dp?id=${slug}`,
           bot_token,
           channel_id,
-          tg_invite_link,
+          tg_invite_link: autoInviteLink,
           pixel_id,
           capi_token,
           theme: selectedTheme
@@ -402,4 +367,9 @@
         const webhookUrl = `${origin}/api/telegram-webhook?slug=${slug}`;
         await fetch(`https://api.telegram.org/bot${bot_token}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=["chat_join_request"]`);
 
-        document.getElementById('generatedPageUr
+        document.getElementById('autoInfoText').textContent = `Connected to "${title}" — Live DP & Private Request Link generated!`;
+        document.getElementById('generatedPageUrl').value = `${origin}/page.html?id=${slug}&utm_campaign={{campaign.name}}`;
+        document.getElementById('generatedDashUrl').value = `${origin}/dashboard.html?id=${slug}`;
+        document.getElementById('resultBox').classList.remove('hidden');
+        document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+        showPopToast('Landing Page &
