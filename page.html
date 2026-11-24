@@ -3,372 +3,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ROJIEADS Studio — Zero Fake Click Page Generator</title>
+  <title>Official Telegram Channel</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; }
-    body {
-      background: radial-gradient(circle at 15% 10%, #172554 0%, #090d16 45%, #030712 100%);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100dvh;
+      width: 100%;
       overflow-x: hidden;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
-    .bg-orb {
-      position: fixed;
-      border-radius: 9999px;
-      filter: blur(90px);
+    .fire-wrapper { position: relative; display: flex; align-items: center; justify-content: center; }
+    .fire-halo {
+      position: absolute; inset: -8px; border-radius: 9999px;
+      background: conic-gradient(from 0deg, #ff2a00, #ff9900, #ffe600, #ff2a00, #b91c1c, #ff7b00);
+      filter: blur(11px); opacity: 0.92;
+      animation: fireSpin 3s linear infinite, fireFlicker 1.3s ease-in-out infinite alternate;
       z-index: 0;
-      pointer-events: none;
-      animation: orbDrift 9s infinite alternate ease-in-out;
     }
-    @keyframes orbDrift {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(30px, -25px) scale(1.12); }
+    .fire-border {
+      position: relative; z-index: 1; border-radius: 9999px; padding: 4px;
+      background: linear-gradient(135deg, #fde047, #f97316, #dc2626, #fbbf24);
+      box-shadow: 0 0 38px rgba(249, 115, 22, 0.85);
     }
-    .glass-panel {
-      background: rgba(15, 23, 42, 0.76);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    @keyframes fireSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fireFlicker { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+    .btn-shine { position: relative; overflow: hidden; animation: btnPulse 2s infinite ease-in-out; }
+    .btn-shine::after {
+      content: ''; position: absolute; top: 0; left: -120%; width: 65%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: skewX(-24deg); animation: shineSweep 2.2s infinite; pointer-events: none;
     }
-    .ripple-target { position: relative; overflow: hidden; }
-    .ripple-circle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(56, 189, 248, 0.45);
-      transform: scale(0);
-      animation: rippleAnim 0.6s linear;
-      pointer-events: none;
-    }
-    @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
-    .toast-pop { animation: popBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-    @keyframes popBounce {
-      0% { opacity: 0; transform: translate(-50%, -24px) scale(0.82); }
-      100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
-    }
-    .btn-shimmer { position: relative; overflow: hidden; }
-    .btn-shimmer::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -120%; width: 65%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
-      transform: skewX(-24deg);
-      animation: shimmerMove 2.6s infinite;
-    }
-    @keyframes shimmerMove { 0% { left: -120%; } 55%, 100% { left: 150%; } }
-    .theme-card { transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .theme-card:active { transform: scale(0.94); }
+    @keyframes shineSweep { 0% { left: -120%; } 55%, 100% { left: 150%; } }
+    @keyframes btnPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
+    .eq-bar { animation: eqBounce 0.95s infinite ease-in-out alternate; }
+    @keyframes eqBounce { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
+    .spin-slow { animation: spinSlow 8s linear infinite; }
+    @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="min-h-screen text-white pb-20 relative">
-
-  <div class="bg-orb w-80 h-80 bg-sky-500/15 -top-16 -left-16"></div>
-  <div class="bg-orb w-96 h-96 bg-indigo-600/15 bottom-10 -right-20" style="animation-delay: 2s;"></div>
-
-  <div id="toastBox" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"></div>
-
-  <!-- Navbar -->
-  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
-    <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-rose-500 to-indigo-600 flex items-center justify-center font-black text-sm shadow-[0_0_20px_rgba(249,115,22,0.5)]">
-          ZF
-        </div>
-        <div>
-          <h1 class="text-sm sm:text-base font-black tracking-wide bg-gradient-to-r from-white via-sky-200 to-amber-200 bg-clip-text text-transparent">
-            ZERO FAKE CLICK STUDIO
-          </h1>
-          <p class="text-[11px] text-slate-400 font-medium">Auto Channel DP + Auto Request Link + Ad UTM</p>
-        </div>
-      </div>
-      <a href="https://t.me/ROJIEADS" target="_blank"
-         class="ripple-target inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-400/30 text-xs font-extrabold text-sky-300 hover:bg-sky-500/20 transition">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        @ROJIEADS
-      </a>
-    </div>
-  </header>
-
-  <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6 relative z-10">
-
-    <!-- Step 1: Bot & Channel ID -->
-    <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
-      <div class="flex items-center justify-between">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">01</span>
-          Telegram Bot &amp; Channel ID
-        </h2>
-        <span class="text-[11px] font-semibold text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-400/20">Auto DP &amp; Auto Link</span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">BotFather API Token *</label>
-          <input id="botToken" type="text" placeholder="123456789:AAF..."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 outline-none transition" />
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Private Channel ID (Starts with -100) *</label>
-          <input id="channelId" type="text" placeholder="-1001234567890"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 outline-none transition" />
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Custom Title (Optional — Auto-fetched if blank)</label>
-          <input id="title" type="text" placeholder="Leave blank for auto Channel Name"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Channel Tagline / Subtitle</label>
-          <input id="subtitle" type="text" value="Daily live updates, high-accuracy setups & complete step-by-step guidance inside our official channel."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Step 2: All 10 Animated Themes Selector -->
-    <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-black">02</span>
-          Select Animated Full-Screen Template (10 Designs)
-        </h2>
-        <div class="flex items-center gap-2">
-          <span id="selectedBadge" class="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/40">
-            Active: #1 Crimson Fire
-          </span>
-          <a id="previewSelectedLink" href="/page.html?theme=1" target="_blank"
-             class="ripple-target text-xs font-extrabold px-3 py-1 rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300 transition">
-            Live Preview ↗
-          </a>
-        </div>
-      </div>
-
-      <div id="themeGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
-    </section>
-
-    <!-- Step 3: Meta Pixel & CAPI -->
-    <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
-      <div class="flex items-center justify-between">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-black">03</span>
-          Meta Pixel &amp; Conversions API (CAPI)
-        </h2>
-        <span class="text-[11px] font-semibold text-purple-300 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-400/20">Server-Side</span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Meta Pixel ID *</label>
-          <input id="pixelId" type="text" placeholder="e.g. 987654321012345"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 outline-none transition" />
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Meta CAPI Access Token *</label>
-          <input id="capiToken" type="text" placeholder="EAABsbCS1iHgBO..."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 outline-none transition" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Generate Button -->
-    <button id="createBtn" onclick="createLandingPage()"
-            class="ripple-target btn-shimmer w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 via-rose-600 to-indigo-600 hover:brightness-110 font-black text-base tracking-wider text-white shadow-[0_15px_40px_rgba(244,63,94,0.45)] cursor-pointer transition">
-      AUTO-FETCH DP &amp; GENERATE LANDING PAGE 🚀
-    </button>
-
-    <!-- Generated Result Box -->
-    <div id="resultBox" class="hidden glass-panel border-emerald-500/40 rounded-3xl p-6 space-y-5">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">🎉</div>
-        <div>
-          <h3 class="text-lg font-black text-emerald-400">Your Zero-Fake-Click Link &amp; Dashboard Are Live!</h3>
-          <p id="autoInfoText" class="text-xs text-slate-400">Channel DP, Private Request Link &amp; Ad-Name Tracking attached.</p>
-        </div>
-      </div>
-
-      <div class="space-y-3">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">1. Meta Ads Website URL (Tracks Campaign, AdSet &amp; Ad Name — Zero Fake Click):</label>
-          <div class="flex gap-2">
-            <input id="generatedPageUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-sky-300 font-mono" />
-            <button onclick="copyText('generatedPageUrl', 'Meta Ads Landing URL Copied!')" class="ripple-target px-5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs shrink-0">Copy</button>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">2. Live Campaign Analytics &amp; Join Dashboard URL:</label>
-          <div class="flex gap-2">
-            <input id="generatedDashUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-amber-300 font-mono" />
-            <button onclick="copyText('generatedDashUrl', 'Dashboard URL Copied!')" class="ripple-target px-5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shrink-0">Copy</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
+<body class="bg-slate-950 text-white">
+  <div id="appRoot" class="min-h-[100dvh] w-full flex flex-col justify-between relative overflow-hidden"></div>
 
   <script>
     const SUPABASE_URL = 'https://famlbufmdobiiljxomey.supabase.co';
     const SUPABASE_KEY = 'sb_publishable__JJOo6JOGVNIAcaOCjsAPQ_kKljVdZY';
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    let selectedTheme = 1;
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('id') || '';
+    const rawCamp = params.get('utm_campaign') || params.get('campaign') || 'Direct';
+    const rawAdSet = params.get('utm_medium') || '';
+    const rawAdName = params.get('utm_content') || '';
+    const campaignName = [rawCamp, rawAdSet, rawAdName].filter(Boolean).join(' | ');
+    const fbclid = params.get('fbclid') || '';
+    const requestedTheme = Number(params.get('theme') || 0);
+    const fallbackAvatar = 'https://i.ibb.co/1J2HgYpQ/IMG-20261103-094934-226.jpg';
 
-    const themeList = [
-      { id: 1, name: 'Crimson Fire', tag: 'Fire Ring + Wave', grad: 'from-rose-800 via-red-950 to-black', dot: 'bg-orange-500' },
-      { id: 2, name: 'Royal VIP Card', tag: '3-Step + Grid', grad: 'from-blue-800 via-slate-900 to-black', dot: 'bg-sky-400' },
-      { id: 3, name: 'Cyber Neon', tag: 'Purple & Cyan', grad: 'from-purple-800 via-indigo-950 to-black', dot: 'bg-cyan-400' },
-      { id: 4, name: 'Luxury Gold', tag: 'Fire Gold Crown', grad: 'from-amber-700 via-stone-900 to-black', dot: 'bg-amber-400' },
-      { id: 5, name: 'Emerald Radar', tag: 'Spinning Ring', grad: 'from-emerald-800 via-teal-950 to-black', dot: 'bg-emerald-400' },
-      { id: 6, name: 'Sunset Fire', tag: 'Amber Blaze', grad: 'from-orange-700 via-red-950 to-black', dot: 'bg-orange-400' },
-      { id: 7, name: 'Midnight Glass', tag: 'Frost Blur', grad: 'from-cyan-800 via-slate-900 to-black', dot: 'bg-cyan-300' },
-      { id: 8, name: 'Clean Sky', tag: 'Telegram Light', grad: 'from-sky-200 via-white to-slate-200', dot: 'bg-[#229ED9]' },
-      { id: 9, name: 'Aurora Matrix', tag: 'Cyber Grid', grad: 'from-fuchsia-800 via-slate-950 to-teal-950', dot: 'bg-fuchsia-400' },
-      { id: 10, name: 'Ruby Fire', tag: 'Diamond Blaze', grad: 'from-pink-800 via-rose-950 to-black', dot: 'bg-pink-400' }
-    ];
+    let pageData = {
+      title: 'ZIYA MALIK',
+      subtitle: 'Daily live updates, verified setups & step-by-step guidance inside our official channel.',
+      image_url: slug ? `/api/channel-dp?id=${slug}` : fallbackAvatar,
+      tg_invite_link: 'https://t.me/+uL2bs041VKFmNDU1',
+      theme: 1
+    };
 
-    function showPopToast(message, accent = 'sky') {
-      const box = document.getElementById('toastBox');
-      const colors = {
-        sky: 'border-sky-400/50 bg-slate-900/95 text-sky-200 shadow-[0_10px_30px_rgba(56,189,248,0.35)]',
-        emerald: 'border-emerald-400/50 bg-slate-900/95 text-emerald-200 shadow-[0_10px_30px_rgba(16,185,129,0.35)]',
-        amber: 'border-amber-400/50 bg-slate-900/95 text-amber-200 shadow-[0_10px_30px_rgba(245,158,11,0.35)]'
-      };
-      box.innerHTML = `
-        <div class="toast-pop px-4 py-2 rounded-full border backdrop-blur-xl text-xs font-extrabold flex items-center gap-2 ${colors[accent] || colors.sky}">
-          <span class="w-2 h-2 rounded-full bg-current animate-ping"></span>
-          <span>${message}</span>
+    function isFakeBot() {
+      const ua = navigator.userAgent || '';
+      if (navigator.webdriver) return true;
+      if (/bot|crawl|spider|headless|facebookexternalhit|facebot|curl|wget|python/i.test(ua)) return true;
+      return false;
+    }
+
+    function getCookie(name) {
+      const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return m ? m[2] : '';
+    }
+
+    const tgIcon = `<svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`;
+
+    const footerCredit = `
+      <div class="mt-5 pt-2 flex justify-center relative z-20">
+        <a href="https://t.me/ROJIEADS" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-950/90 border border-white/15 shadow-lg text-[11px] font-bold text-slate-200">
+          <span class="text-slate-400">Created by</span>
+          <span class="w-4 h-4 rounded-full bg-[#229ED9] text-white flex items-center justify-center shrink-0">
+            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </span>
+          <span class="text-sky-400 font-extrabold">@ROJIEADS</span>
+        </a>
+      </div>
+    `;
+
+    function fireAvatar(imgUrl) {
+      return `
+        <div class="fire-wrapper w-36 h-36 mb-6">
+          <div class="fire-halo"></div>
+          <div class="fire-border w-full h-full">
+            <img src="${imgUrl}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-black" />
+          </div>
         </div>
       `;
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => { box.innerHTML = ''; }, 2200);
     }
 
-    document.addEventListener('click', (e) => {
-      const target = e.target.closest('.ripple-target, input, button');
-      if (!target) return;
-      if (target.classList.contains('ripple-target')) {
-        const rect = target.getBoundingClientRect();
-        const circle = document.createElement('span');
-        const size = Math.max(rect.width, rect.height);
-        circle.style.width = circle.style.height = `${size}px`;
-        circle.style.left = `${e.clientX - rect.left - size / 2}px`;
-        circle.style.top = `${e.clientY - rect.top - size / 2}px`;
-        circle.className = 'ripple-circle';
-        target.appendChild(circle);
-        setTimeout(() => circle.remove(), 600);
-      }
-      if (target.tagName === 'INPUT' && !target.readOnly) {
-        showPopToast(`Editing ${target.previousElementSibling?.textContent?.replace(' *', '') || 'Field'}`, 'sky');
-      }
-    });
-
-    function renderThemeCards() {
-      const grid = document.getElementById('themeGrid');
-      grid.innerHTML = themeList.map(t => {
-        const active = t.id === selectedTheme;
-        return `
-          <div onclick="selectTheme(${t.id}, '${t.name}')"
-               class="ripple-target theme-card cursor-pointer rounded-2xl p-2.5 border ${active ? 'border-orange-400 ring-2 ring-orange-400/40 bg-slate-800/95 scale-[1.03]' : 'border-slate-800 bg-slate-950/70 hover:border-slate-600'}">
-            <div class="h-20 rounded-xl bg-gradient-to-br ${t.grad} flex flex-col items-center justify-center p-2 mb-2 relative overflow-hidden">
-              <span class="w-6 h-6 rounded-full ${t.dot} mb-1.5 shadow-lg"></span>
-              <span class="w-14 h-2 rounded-full ${t.dot} opacity-90"></span>
-              ${active ? '<span class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-orange-400 text-slate-950 text-[9px] font-black">ON</span>' : ''}
-            </div>
-            <div class="flex items-center justify-between gap-1">
-              <p class="text-xs font-extrabold text-white truncate">#${t.id} ${t.name}</p>
-              <a href="/page.html?theme=${t.id}" target="_blank" onclick="event.stopPropagation()" class="text-[10px] font-bold text-sky-400 hover:underline shrink-0">View</a>
-            </div>
-            <p class="text-[10px] text-slate-400 truncate">${t.tag}</p>
-          </div>
-        `;
+    function renderTheme(themeId) {
+      const root = document.getElementById('appRoot');
+      const { title, subtitle, image_url } = pageData;
+      const eqBars = Array.from({ length: 28 }, (_, i) => {
+        const h = [10, 14, 20, 26, 18, 12, 10, 16, 28, 36, 30, 20, 14, 10, 18, 32, 40, 32, 22, 16, 10, 18, 26, 20, 14, 12, 16, 22][i];
+        return `<span class="eq-bar w-1 rounded-full bg-gradient-to-t from-red-600 via-orange-400 to-yellow-200" style="height:${h}px; animation-delay:${(i * 0.06).toFixed(2)}s"></span>`;
       }).join('');
+
+      const themes = {
+        1: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8" style="background: radial-gradient(circle at 50% 20%, #581115 0%, #220608 55%, #090203 100%);"><div class="my-auto flex flex-col items-center w-full max-w-sm">${fireAvatar(image_url)}<p class="text-[11px] font-bold tracking-[0.28em] uppercase text-amber-200/85 mb-2">OFFICIAL TELEGRAM CHANNEL</p><h1 class="text-4xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-rose-100/85 leading-relaxed max-w-xs mb-6">${subtitle}</p><div class="flex items-center justify-center gap-1 h-10 mb-7">${eqBars}</div><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl font-black text-base text-white flex items-center justify-center gap-2.5 shadow-[0_12px_40px_rgba(239,68,68,0.75)]" style="background: linear-gradient(90deg, #ef4444 0%, #f97316 50%, #dc2626 100%);">${tgIcon} <span id="btnText">Join the Channel →</span></button><p class="text-xs text-amber-200/80 mt-4">Status: <span class="text-emerald-400 font-bold">Ready</span> • opens in Telegram</p></div>${footerCredit}</div>`,
+        2: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-5 py-6" style="background: linear-gradient(180deg, #0d1629 0%, #070c17 100%);"><div class="w-full max-w-sm my-auto bg-[#111c33]/95 border border-sky-400/25 rounded-[30px] p-6 shadow-2xl"><div class="w-32 h-32 mx-auto rounded-full p-1 bg-gradient-to-tr from-sky-400 via-amber-400 to-blue-600 mb-4"><img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-900" /></div><h1 class="text-3xl font-black uppercase text-white mb-4">${title}</h1><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-5 rounded-2xl bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 font-black text-base text-white flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">JOIN Telegram Channel →</span></button><div class="grid grid-cols-3 gap-2 my-4 pt-4 border-t border-slate-800 text-[11px] text-slate-300 font-semibold"><div>👆<br/>Tap button</div><div>📩<br/>Request Join</div><div>✅<br/>Approved</div></div></div>${footerCredit}</div>`,
+        3: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-4 py-6" style="background: radial-gradient(circle at 50% 0%, #241445 0%, #090614 75%);"><div class="w-full max-w-sm bg-[#110c24]/95 border border-purple-500/35 rounded-[28px] p-6 my-auto"><div class="w-28 h-28 mx-auto rounded-full p-1 bg-gradient-to-tr from-cyan-400 via-purple-500 to-amber-400 mb-5"><img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-950" /></div><h1 class="text-3xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-slate-300 mb-6">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-600 to-fuchsia-600 font-black text-base text-white flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">Join Telegram 🚀 →</span></button></div>${footerCredit}</div>`,
+        4: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8" style="background: radial-gradient(circle at 50% 15%, #422a08 0%, #090705 68%);"><div class="w-full max-w-sm my-auto flex flex-col items-center">${fireAvatar(image_url)}<h1 class="text-4xl font-black uppercase text-amber-300 mb-3">${title}</h1><p class="text-sm text-amber-100/80 mb-8">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-300 via-yellow-500 to-orange-500 text-slate-950 font-black text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">JOIN VIP CHANNEL NOW →</span></button></div>${footerCredit}</div>`,
+        5: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8" style="background: radial-gradient(circle at 50% 20%, #063729 0%, #030d0a 72%);"><div class="w-full max-w-sm my-auto flex flex-col items-center"><div class="relative w-40 h-40 flex items-center justify-center mb-6"><div class="absolute inset-0 rounded-full border-2 border-dashed border-emerald-400/60 spin-slow"></div><div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-emerald-400 to-teal-300"><img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-950" /></div></div><h1 class="text-4xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-emerald-100/80 mb-8">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-black text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">OPEN IN TELEGRAM →</span></button></div>${footerCredit}</div>`,
+        6: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8" style="background: radial-gradient(circle at 50% 15%, #581c07 0%, #140502 72%);"><div class="w-full max-w-sm my-auto flex flex-col items-center">${fireAvatar(image_url)}<h1 class="text-4xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-orange-100/85 mb-8">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-red-600 text-white font-black text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">JOIN TELEGRAM FAST →</span></button></div>${footerCredit}</div>`,
+        7: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-5 py-8" style="background: linear-gradient(135deg, #061326 0%, #0b2447 50%, #040914 100%);"><div class="w-full max-w-sm my-auto backdrop-blur-xl bg-white/[0.06] border border-white/15 rounded-[32px] p-7"><div class="w-32 h-32 mx-auto rounded-full p-1 bg-gradient-to-r from-cyan-400 to-blue-500 mb-5"><img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-900" /></div><h1 class="text-3xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-slate-200/85 mb-7">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-black text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">JOIN CHANNEL FREE →</span></button></div>${footerCredit}</div>`,
+        8: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8 bg-gradient-to-b from-sky-50 via-white to-slate-100 text-slate-900"><div class="w-full max-w-sm my-auto bg-white border border-slate-200 rounded-[32px] p-7 shadow-xl flex flex-col items-center"><div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-sky-500 to-blue-600 mb-5"><img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-white" /></div><h1 class="text-3xl font-black uppercase text-slate-900 mb-3">${title}</h1><p class="text-sm text-slate-600 mb-7">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-[#229ED9] text-white font-extrabold text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">VIEW IN TELEGRAM →</span></button></div>${footerCredit}</div>`,
+        9: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8" style="background: #070510;"><div class="w-full max-w-sm my-auto flex flex-col items-center bg-slate-950/90 border border-fuchsia-500/35 rounded-[30px] p-7"><div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-fuchsia-500 via-teal-400 to-indigo-500 mb-5"><img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-black" /></div><h1 class="text-3xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-slate-300 mb-7">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-teal-500 text-white font-black text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">REQUEST TO JOIN →</span></button></div>${footerCredit}</div>`,
+        10: `<div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8" style="background: radial-gradient(circle at 50% 15%, #550725 0%, #14030b 72%);"><div class="w-full max-w-sm my-auto flex flex-col items-center">${fireAvatar(image_url)}<h1 class="text-4xl font-black uppercase text-white mb-3">${title}</h1><p class="text-sm text-pink-100/85 mb-8">${subtitle}</p><button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-red-600 text-white font-black text-base flex items-center justify-center gap-2.5">${tgIcon} <span id="btnText">JOIN RUBY VIP NOW →</span></button></div>${footerCredit}</div>`
+      };
+      root.innerHTML = themes[themeId] || themes[1];
     }
 
-    function selectTheme(id, name) {
-      selectedTheme = id;
-      document.getElementById('selectedBadge').textContent = `Active: #${id} ${name}`;
-      document.getElementById('previewSelectedLink').href = `/page.html?theme=${id}`;
-      renderThemeCards();
-      showPopToast(`Theme #${id} (${name}) Selected!`, 'sky');
-    }
+    async function initLanding() {
+      renderTheme(requestedTheme || 1);
+      if (!slug || isFakeBot()) return;
 
-    function copyText(inputId, msg) {
-      const el = document.getElementById(inputId);
-      el.select();
-      navigator.clipboard.writeText(el.value);
-      showPopToast(msg, 'emerald');
-    }
-
-    async function createLandingPage() {
-      const bot_token = document.getElementById('botToken').value.trim();
-      const channel_id = document.getElementById('channelId').value.trim();
-      let title = document.getElementById('title').value.trim();
-      const subtitle = document.getElementById('subtitle').value.trim();
-      const pixel_id = document.getElementById('pixelId').value.trim();
-      const capi_token = document.getElementById('capiToken').value.trim();
-
-      if (!bot_token || !channel_id) {
-        showPopToast('Enter Bot API Token & Channel ID first!', 'amber');
-        return;
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/landing_pages?slug=eq.${encodeURIComponent(slug)}&select=*`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const rows = await res.json();
+      if (rows && rows.length) {
+        pageData = { ...pageData, ...rows[0], image_url: `/api/channel-dp?id=${slug}` };
+        document.title = `${pageData.title} — Official Telegram`;
+        renderTheme(requestedTheme || Number(rows[0].theme) || 1);
       }
 
-      const btn = document.getElementById('createBtn');
-      btn.disabled = true;
-      btn.textContent = 'CONNECTING CHANNEL & CREATING PRIVATE LINK...';
-      showPopToast('Verifying Bot & Channel ID...', 'sky');
+      await fetch(`${SUPABASE_URL}/rest/v1/visit_logs`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page_slug: slug, campaign_name: campaignName, user_agent: navigator.userAgent })
+      });
+    }
 
-      const slug = 'vip-' + Math.random().toString(36).substring(2, 8);
-      const origin = window.location.origin;
+    async function handleJoinClick() {
+      if (isFakeBot()) return;
+      const btn = document.getElementById('joinBtn');
+      const btnText = document.getElementById('btnText');
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = 'Generating VIP Invite Link...';
 
       try {
-        const chatRes = await fetch(`https://api.telegram.org/bot${bot_token}/getChat?chat_id=${encodeURIComponent(channel_id)}`);
-        const chatJson = await chatRes.json();
-        if (!chatJson.ok) {
-          throw new Error('Bot cannot access channel! Add your Bot as Admin in ' + channel_id);
-        }
-        if (!title) {
-          title = chatJson.result.title || 'VIP TELEGRAM';
-        }
-
-        const invRes = await fetch(`https://api.telegram.org/bot${bot_token}/createChatInviteLink`, {
+        const res = await fetch('/api/create-invite', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: channel_id,
-            name: `ROJIEADS-${slug}`,
-            creates_join_request: true
-          })
+          body: JSON.stringify({ slug, campaignName, fbclid, fbp: getCookie('_fbp'), userAgent: navigator.userAgent })
         });
-        const invJson = await invRes.json();
-        if (!invJson.ok || !invJson.result?.invite_link) {
-          throw new Error('Enable "Invite Users via Link" permission for your Bot in the channel!');
-        }
-        const autoInviteLink = invJson.result.invite_link;
+        const data = await res.json();
+        const targetUrl = data.invite_link || pageData.tg_invite_link;
+        if (targetUrl) window.location.href = targetUrl;
+      } catch (e) {
+        if (pageData.tg_invite_link) window.location.href = pageData.tg_invite_link;
+      }
+    }
 
-        const { error } = await db.from('landing_pages').insert([{
-          slug,
-          title,
-          subtitle,
-          image_url: `${origin}/api/channel-dp?id=${slug}`,
-          bot_token,
-          channel_id,
-          tg_invite_link: autoInviteLink,
-          pixel_id,
-          capi_token,
-          theme: selectedTheme
-        }]);
-
-        if (error) throw error;
-
-        const webhookUrl = `${origin}/api/telegram-webhook?slug=${slug}`;
-        await fetch(`https://api.telegram.org/bot${bot_token}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=["chat_join_request"]`);
-
-        document.getElementById('autoInfoText').textContent = `Connected to "${title}" — Live DP, Private Link & Ad-Name UTM ready!`;
-        document.getElementById('generatedPageUrl').value = `${origin}/page.html?id=${slug}&utm_source=meta&utm_campaign={{campaign.name}}&utm_medium={{adset.name}}&utm_content={{ad.name}}`;
-        document.getElementById('generatedDashUrl').value = `${origin}/dashboard.html?id=${slug}`;
-        document.getElementById('resultBox').classList.remove('hidden');
-        document.getElementById('resultBox').scrollIntoView({
+    initLanding();
+  </script>
+</body>
+</html>
