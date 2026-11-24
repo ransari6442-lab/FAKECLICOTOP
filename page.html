@@ -29,9 +29,9 @@
       inset: -8px;
       border-radius: 9999px;
       background: conic-gradient(from 0deg, #ff2a00, #ff9900, #ffe600, #ff2a00, #b91c1c, #ff7b00);
-      filter: blur(10px);
-      opacity: 0.9;
-      animation: fireSpin 3s linear infinite, fireFlicker 1.4s ease-in-out infinite alternate;
+      filter: blur(11px);
+      opacity: 0.92;
+      animation: fireSpin 3s linear infinite, fireFlicker 1.3s ease-in-out infinite alternate;
       z-index: 0;
     }
     .fire-border {
@@ -40,7 +40,7 @@
       border-radius: 9999px;
       padding: 4px;
       background: linear-gradient(135deg, #fde047, #f97316, #dc2626, #fbbf24);
-      box-shadow: 0 0 35px rgba(249, 115, 22, 0.8), inset 0 0 12px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 38px rgba(249, 115, 22, 0.85), inset 0 0 12px rgba(255, 255, 255, 0.5);
     }
     @keyframes fireSpin {
       0% { transform: rotate(0deg) scale(1); }
@@ -48,11 +48,11 @@
       100% { transform: rotate(360deg) scale(1); }
     }
     @keyframes fireFlicker {
-      0% { opacity: 0.78; filter: blur(9px); }
+      0% { opacity: 0.8; filter: blur(9px); }
       100% { opacity: 1; filter: blur(14px); }
     }
 
-    /* High-Voltage Shimmer + Fire-Glow CTA Button */
+    /* Shimmer + Pulse CTA Button */
     .btn-shine {
       position: relative;
       overflow: hidden;
@@ -62,30 +62,18 @@
     .btn-shine::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: -120%;
-      width: 65%;
-      height: 100%;
+      top: 0; left: -120%; width: 65%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
       transform: skewX(-24deg);
       animation: shineSweep 2.2s infinite;
     }
     .btn-shine:active { transform: scale(0.95); }
-    @keyframes shineSweep {
-      0% { left: -120%; }
-      55%, 100% { left: 150%; }
-    }
-    @keyframes btnPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.025); }
-    }
+    @keyframes shineSweep { 0% { left: -120%; } 55%, 100% { left: 150%; } }
+    @keyframes btnPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
 
-    /* Soundwave Equalizer */
+    /* Equalizer Bars */
     .eq-bar { animation: eqBounce 0.95s infinite ease-in-out alternate; }
-    @keyframes eqBounce {
-      0% { transform: scaleY(0.3); }
-      100% { transform: scaleY(1); }
-    }
+    @keyframes eqBounce { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
 
     /* Floating Sparks */
     .spark {
@@ -101,10 +89,7 @@
     }
 
     .spin-slow { animation: spinSlow 8s linear infinite; }
-    @keyframes spinSlow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .cyber-grid {
       background-image: linear-gradient(rgba(217, 70, 239, 0.14) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(45, 212, 191, 0.14) 1px, transparent 1px);
@@ -122,15 +107,17 @@
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const params = new URLSearchParams(window.location.search);
-    const slug = params.get('id') || 'vip-n6de90';
+    const slug = params.get('id') || '';
     const campaignName = params.get('utm_campaign') || params.get('campaign') || 'Direct / Organic';
     const fbclid = params.get('fbclid') || '';
     const requestedTheme = Number(params.get('theme') || 0);
 
+    const fallbackAvatar = 'https://i.ibb.co/1J2HgYpQ/IMG-20261103-094934-226.jpg';
+
     let pageData = {
       title: 'ZIYA MALIK',
       subtitle: 'Daily live updates, verified setups & step-by-step guidance inside our official channel.',
-      image_url: 'https://i.ibb.co/1J2HgYpQ/IMG-20261103-094934-226.jpg',
+      image_url: slug ? `/api/channel-dp?id=${slug}` : fallbackAvatar,
       tg_invite_link: 'https://t.me/+uL2bs041VKFmNDU1',
       theme: 1
     };
@@ -160,7 +147,7 @@
         <div class="fire-wrapper ${sizeClass} mb-6">
           <div class="fire-halo"></div>
           <div class="fire-border w-full h-full">
-            <img src="${imgUrl}" class="w-full h-full object-cover rounded-full bg-black" />
+            <img src="${imgUrl}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-black" />
           </div>
         </div>
       `;
@@ -183,7 +170,6 @@
       `;
 
       const themes = {
-        // THEME 1: Crimson Fire Ring + Soundwave + Blazing Button
         1: `
           <div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8 relative" style="background: radial-gradient(circle at 50% 20%, #581115 0%, #220608 55%, #090203 100%);">
             ${sparks}
@@ -206,15 +192,13 @@
             ${footerCredit}
           </div>
         `,
-
-        // THEME 2: Royal Blue VIP Card + 3-Step Guide + Feature Grid
         2: `
           <div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-5 py-6 relative" style="background: linear-gradient(180deg, #0d1629 0%, #070c17 100%);">
             <div class="w-full max-w-sm my-auto flex flex-col justify-between bg-[#111c33]/95 border border-sky-400/25 rounded-[30px] p-6 shadow-2xl">
               <div class="flex flex-col items-center">
                 <div class="relative w-32 h-32 mb-4">
                   <div class="w-full h-full rounded-full p-1 bg-gradient-to-tr from-sky-400 via-amber-400 to-blue-600 shadow-[0_0_38px_rgba(56,189,248,0.55)]">
-                    <img src="${image_url}" class="w-full h-full object-cover rounded-full bg-slate-900" />
+                    <img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-900" />
                   </div>
                   <span class="w-6 h-6 rounded-full bg-emerald-400 border-4 border-[#111c33] absolute bottom-1 right-1"></span>
                 </div>
@@ -243,8 +227,6 @@
             ${footerCredit}
           </div>
         `,
-
-        // THEME 3: Cyber Violet & Cyan Neon
         3: `
           <div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-4 py-6 relative" style="background: radial-gradient(circle at 50% 0%, #241445 0%, #090614 75%);">
             <div class="w-full max-w-sm bg-white/[0.05] border border-purple-400/25 rounded-2xl px-4 py-2.5 flex items-center justify-between">
@@ -256,7 +238,7 @@
             </div>
             <div class="w-full max-w-sm bg-[#110c24]/95 border border-purple-500/35 rounded-[28px] p-6 shadow-[0_20px_60px_rgba(124,58,237,0.35)] my-auto">
               <div class="w-28 h-28 mx-auto rounded-full p-1 bg-gradient-to-tr from-cyan-400 via-purple-500 to-amber-400 shadow-[0_0_40px_rgba(168,85,247,0.6)] mb-5">
-                <img src="${image_url}" class="w-full h-full object-cover rounded-full bg-slate-950" />
+                <img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-950" />
               </div>
               <p class="text-[11px] font-bold tracking-widest uppercase text-cyan-300 mb-2">● OFFICIAL TELEGRAM CHANNEL</p>
               <h1 class="text-3xl font-black uppercase bg-gradient-to-r from-white via-purple-100 to-cyan-200 bg-clip-text text-transparent mb-3">${title}</h1>
@@ -274,8 +256,6 @@
             ${footerCredit}
           </div>
         `,
-
-        // THEME 4: Luxury Gold Fire Crown
         4: `
           <div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8 relative" style="background: radial-gradient(circle at 50% 15%, #422a08 0%, #090705 68%);">
             ${sparks}
@@ -296,19 +276,18 @@
             ${footerCredit}
           </div>
         `,
-
-        // THEME 5: Emerald Matrix Radar
         5: `
           <div class="min-h-[100dvh] w-full flex flex-col justify-between items-center text-center px-6 py-8 relative" style="background: radial-gradient(circle at 50% 20%, #063729 0%, #030d0a 72%);">
             <div class="w-full max-w-sm my-auto flex flex-col items-center relative z-10">
               <div class="relative w-40 h-40 flex items-center justify-center mb-6">
                 <div class="absolute inset-0 rounded-full border-2 border-dashed border-emerald-400/60 spin-slow"></div>
                 <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-emerald-400 to-teal-300 shadow-[0_0_45px_rgba(16,185,129,0.6)]">
-                  <img src="${image_url}" class="w-full h-full object-cover rounded-full bg-slate-950" />
+                  <img src="${image_url}" onerror="this.src='${fallbackAvatar}'" class="w-full h-full object-cover rounded-full bg-slate-950" />
                 </div>
               </div>
               <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/35 text-emerald-300 text-xs font-bold mb-3">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE SIGNAL HUB
               </div>
               <h1 class="text-4xl font-black uppercase text-white tracking-tight mb-3">${title}</h1>
-              <p class="text-sm text-emerald-100/80 leading-relaxed mb-8">${subtitle}</
+              <p class="text-sm text-emerald-100/80 leading-relaxed mb-8">${subtitle}</p>
+              <button id="joinBtn" onclick="handleJoinClick()" class="btn-shine w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400
