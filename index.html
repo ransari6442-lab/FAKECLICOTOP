@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ROJIEADS Studio — Zero Fake Click Page Generator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -13,197 +12,128 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
     }
-    .bg-orb {
-      position: fixed;
-      border-radius: 9999px;
-      filter: blur(90px);
-      z-index: 0;
-      pointer-events: none;
-      animation: orbDrift 9s infinite alternate ease-in-out;
-    }
-    @keyframes orbDrift {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(30px, -25px) scale(1.12); }
-    }
     .glass-panel {
-      background: rgba(15, 23, 42, 0.76);
+      background: rgba(15, 23, 42, 0.82);
       backdrop-filter: blur(18px);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
     }
-    .ripple-target { position: relative; overflow: hidden; }
-    .ripple-circle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(56, 189, 248, 0.45);
-      transform: scale(0);
-      animation: rippleAnim 0.6s linear;
-      pointer-events: none;
-    }
-    @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
-    .toast-pop { animation: popBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .toast-pop { animation: popBounce 0.3s ease forwards; }
     @keyframes popBounce {
-      0% { opacity: 0; transform: translate(-50%, -24px) scale(0.82); }
+      0% { opacity: 0; transform: translate(-50%, -20px) scale(0.85); }
       100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
     }
-    .btn-shimmer { position: relative; overflow: hidden; }
-    .btn-shimmer::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -120%; width: 65%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
-      transform: skewX(-24deg);
-      animation: shimmerMove 2.6s infinite;
-    }
-    @keyframes shimmerMove { 0% { left: -120%; } 55%, 100% { left: 150%; } }
-    .theme-card { transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .theme-card:active { transform: scale(0.94); }
+    .theme-card { transition: all 0.2s ease; }
+    .theme-card:active { transform: scale(0.95); }
   </style>
 </head>
 <body class="min-h-screen text-white pb-20 relative">
 
-  <div class="bg-orb w-80 h-80 bg-sky-500/15 -top-16 -left-16"></div>
-  <div class="bg-orb w-96 h-96 bg-indigo-600/15 bottom-10 -right-20" style="animation-delay: 2s;"></div>
-
   <div id="toastBox" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"></div>
 
-  <!-- Navbar -->
-  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/85 backdrop-blur-xl">
     <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-rose-500 to-indigo-600 flex items-center justify-center font-black text-sm shadow-[0_0_20px_rgba(249,115,22,0.5)]">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-rose-500 to-indigo-600 flex items-center justify-center font-black text-sm">
           ZF
         </div>
         <div>
-          <h1 class="text-sm sm:text-base font-black tracking-wide bg-gradient-to-r from-white via-sky-200 to-amber-200 bg-clip-text text-transparent">
-            ZERO FAKE CLICK STUDIO
-          </h1>
-          <p class="text-[11px] text-slate-400 font-medium">Auto Channel DP + Auto Request Link + Ad UTM</p>
+          <h1 class="text-sm sm:text-base font-black tracking-wide text-white">ZERO FAKE CLICK STUDIO</h1>
+          <p class="text-[11px] text-slate-400">Auto Channel DP + Auto Request Link + Ad UTM</p>
         </div>
       </div>
-      <a href="https://t.me/ROJIEADS" target="_blank"
-         class="ripple-target inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-400/30 text-xs font-extrabold text-sky-300 hover:bg-sky-500/20 transition">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <a href="https://t.me/ROJIEADS" target="_blank" class="px-3.5 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-xs font-extrabold text-sky-300">
         @ROJIEADS
       </a>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6 relative z-10">
+  <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6">
 
-    <!-- Step 1: Bot & Channel ID -->
+    <div id="errorBanner" class="hidden rounded-2xl bg-red-950 border border-red-500 p-4 text-sm text-red-200 font-bold"></div>
+
+    <!-- Step 1 -->
     <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">01</span>
-          Telegram Bot &amp; Channel ID
-        </h2>
-        <span class="text-[11px] font-semibold text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-400/20">Auto DP &amp; Auto Link</span>
+        <h2 class="text-base sm:text-lg font-extrabold text-white">01. Telegram Bot &amp; Channel ID</h2>
+        <span class="text-[11px] font-semibold text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-400/20">Auto DP &amp; Link</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1.5">BotFather API Token *</label>
-          <input id="botToken" type="text" placeholder="123456789:AAF..."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 outline-none transition" />
+          <input id="botToken" type="text" placeholder="123456789:AAF..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-emerald-400" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Private Channel ID (Starts with -100) *</label>
-          <input id="channelId" type="text" placeholder="-1001234567890"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 outline-none transition" />
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Private Channel ID (-100...) *</label>
+          <input id="channelId" type="text" placeholder="-1001234567890" class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-emerald-400" />
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Custom Title (Optional — Auto-fetched if blank)</label>
-          <input id="title" type="text" placeholder="Leave blank for auto Channel Name"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Custom Title (Optional)</label>
+          <input id="title" type="text" placeholder="Leave blank for auto Channel Name" class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-sky-400" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Channel Tagline / Subtitle</label>
-          <input id="subtitle" type="text" value="Daily live updates, high-accuracy setups & complete step-by-step guidance inside our official channel."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20 outline-none transition" />
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Channel Subtitle</label>
+          <input id="subtitle" type="text" value="Daily live updates, high-accuracy setups & complete step-by-step guidance inside our official channel." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-sky-400" />
         </div>
       </div>
     </section>
 
-    <!-- Step 2: All 10 Animated Themes Selector -->
+    <!-- Step 2 -->
     <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-black">02</span>
-          Select Animated Full-Screen Template (10 Designs)
-        </h2>
+        <h2 class="text-base sm:text-lg font-extrabold text-white">02. Select Animated Template (10 Designs)</h2>
         <div class="flex items-center gap-2">
-          <span id="selectedBadge" class="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/40">
-            Active: #1 Crimson Fire
-          </span>
-          <a id="previewSelectedLink" href="/page.html?theme=1" target="_blank"
-             class="ripple-target text-xs font-extrabold px-3 py-1 rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300 transition">
-            Live Preview ↗
-          </a>
+          <span id="selectedBadge" class="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/40">Active: #1 Crimson Fire</span>
+          <a id="previewSelectedLink" href="/page.html?theme=1" target="_blank" class="text-xs font-extrabold px-3 py-1 rounded-full bg-amber-400 text-slate-950">Live Preview ↗</a>
         </div>
       </div>
-
       <div id="themeGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
     </section>
 
-    <!-- Step 3: Meta Pixel & CAPI -->
+    <!-- Step 3 -->
     <section class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-black">03</span>
-          Meta Pixel &amp; Conversions API (CAPI)
-        </h2>
+        <h2 class="text-base sm:text-lg font-extrabold text-white">03. Meta Pixel &amp; Conversions API (CAPI)</h2>
         <span class="text-[11px] font-semibold text-purple-300 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-400/20">Server-Side</span>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1.5">Meta Pixel ID *</label>
-          <input id="pixelId" type="text" placeholder="e.g. 987654321012345"
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 outline-none transition" />
+          <input id="pixelId" type="text" placeholder="e.g. 987654321012345" class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-purple-400" />
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1.5">Meta CAPI Access Token *</label>
-          <input id="capiToken" type="text" placeholder="EAABsbCS1iHgBO..."
-                 class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 outline-none transition" />
+          <input id="capiToken" type="text" placeholder="EAABsbCS1iHgBO..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-purple-400" />
         </div>
       </div>
     </section>
 
-    <!-- Generate Button -->
-    <button id="createBtn" onclick="createLandingPage()"
-            class="ripple-target btn-shimmer w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 via-rose-600 to-indigo-600 hover:brightness-110 font-black text-base tracking-wider text-white shadow-[0_15px_40px_rgba(244,63,94,0.45)] cursor-pointer transition">
+    <button id="createBtn" type="button" class="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 via-rose-600 to-indigo-600 hover:brightness-110 font-black text-base tracking-wider text-white shadow-2xl cursor-pointer">
       AUTO-FETCH DP &amp; GENERATE LANDING PAGE 🚀
     </button>
 
-    <!-- Generated Result Box -->
-    <div id="resultBox" class="hidden glass-panel border-emerald-500/40 rounded-3xl p-6 space-y-5">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">🎉</div>
-        <div>
-          <h3 class="text-lg font-black text-emerald-400">Your Zero-Fake-Click Link &amp; Dashboard Are Live!</h3>
-          <p id="autoInfoText" class="text-xs text-slate-400">Channel DP, Private Request Link &amp; Ad-Name Tracking attached.</p>
+    <!-- Output Box -->
+    <div id="resultBox" class="hidden glass-panel border-emerald-500/50 rounded-3xl p-6 space-y-4">
+      <h3 class="text-lg font-black text-emerald-400">🎉 Landing Page &amp; Auto-Invite Link Ready!</h3>
+      <p id="autoInfoText" class="text-xs text-slate-300"></p>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-300 mb-1">1. Meta Ads Website URL (Zero Fake Click + Ad Name UTM):</label>
+        <div class="flex gap-2">
+          <input id="generatedPageUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-sky-300 font-mono" />
+          <button type="button" id="copyPageBtn" class="px-5 rounded-2xl bg-sky-500 text-slate-950 font-black text-xs shrink-0 cursor-pointer">Copy</button>
         </div>
       </div>
 
-      <div class="space-y-3">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">1. Meta Ads Website URL (Tracks Campaign, AdSet &amp; Ad Name — Zero Fake Click):</label>
-          <div class="flex gap-2">
-            <input id="generatedPageUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-sky-300 font-mono" />
-            <button onclick="copyText('generatedPageUrl', 'Meta Ads Landing URL Copied!')" class="ripple-target px-5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs shrink-0">Copy</button>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">2. Live Campaign Analytics &amp; Join Dashboard URL:</label>
-          <div class="flex gap-2">
-            <input id="generatedDashUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-amber-300 font-mono" />
-            <button onclick="copyText('generatedDashUrl', 'Dashboard URL Copied!')" class="ripple-target px-5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shrink-0">Copy</button>
-          </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-300 mb-1">2. Live Campaign Analytics Dashboard URL:</label>
+        <div class="flex gap-2">
+          <input id="generatedDashUrl" readonly class="w-full p-3.5 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-amber-300 font-mono" />
+          <button type="button" id="copyDashBtn" class="px-5 rounded-2xl bg-amber-400 text-slate-950 font-black text-xs shrink-0 cursor-pointer">Copy</button>
         </div>
       </div>
     </div>
@@ -213,8 +143,6 @@
   <script>
     const SUPABASE_URL = 'https://famlbufmdobiiljxomey.supabase.co';
     const SUPABASE_KEY = 'sb_publishable__JJOo6JOGVNIAcaOCjsAPQ_kKljVdZY';
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
     let selectedTheme = 1;
 
     const themeList = [
@@ -230,80 +158,67 @@
       { id: 10, name: 'Ruby Fire', tag: 'Diamond Blaze', grad: 'from-pink-800 via-rose-950 to-black', dot: 'bg-pink-400' }
     ];
 
-    function showPopToast(message, accent = 'sky') {
+    function showToast(msg) {
       const box = document.getElementById('toastBox');
-      const colors = {
-        sky: 'border-sky-400/50 bg-slate-900/95 text-sky-200 shadow-[0_10px_30px_rgba(56,189,248,0.35)]',
-        emerald: 'border-emerald-400/50 bg-slate-900/95 text-emerald-200 shadow-[0_10px_30px_rgba(16,185,129,0.35)]',
-        amber: 'border-amber-400/50 bg-slate-900/95 text-amber-200 shadow-[0_10px_30px_rgba(245,158,11,0.35)]'
-      };
-      box.innerHTML = `
-        <div class="toast-pop px-4 py-2 rounded-full border backdrop-blur-xl text-xs font-extrabold flex items-center gap-2 ${colors[accent] || colors.sky}">
-          <span class="w-2 h-2 rounded-full bg-current animate-ping"></span>
-          <span>${message}</span>
-        </div>
-      `;
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => { box.innerHTML = ''; }, 2200);
+      box.innerHTML = `<div class="toast-pop px-4 py-2 rounded-full border border-sky-400/50 bg-slate-900 text-sky-200 text-xs font-extrabold shadow-xl">${msg}</div>`;
+      clearTimeout(window._t);
+      window._t = setTimeout(() => { box.innerHTML = ''; }, 2200);
     }
 
-    document.addEventListener('click', (e) => {
-      const target = e.target.closest('.ripple-target, input, button');
-      if (!target) return;
-      if (target.classList.contains('ripple-target')) {
-        const rect = target.getBoundingClientRect();
-        const circle = document.createElement('span');
-        const size = Math.max(rect.width, rect.height);
-        circle.style.width = circle.style.height = `${size}px`;
-        circle.style.left = `${e.clientX - rect.left - size / 2}px`;
-        circle.style.top = `${e.clientY - rect.top - size / 2}px`;
-        circle.className = 'ripple-circle';
-        target.appendChild(circle);
-        setTimeout(() => circle.remove(), 600);
-      }
-      if (target.tagName === 'INPUT' && !target.readOnly) {
-        showPopToast(`Editing ${target.previousElementSibling?.textContent?.replace(' *', '') || 'Field'}`, 'sky');
-      }
-    });
+    function showError(msg) {
+      const b = document.getElementById('errorBanner');
+      b.textContent = '⚠️ ' + msg;
+      b.classList.remove('hidden');
+      b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     function renderThemeCards() {
       const grid = document.getElementById('themeGrid');
-      grid.innerHTML = themeList.map(t => {
+      grid.innerHTML = '';
+      themeList.forEach(t => {
         const active = t.id === selectedTheme;
-        return `
-          <div onclick="selectTheme(${t.id}, '${t.name}')"
-               class="ripple-target theme-card cursor-pointer rounded-2xl p-2.5 border ${active ? 'border-orange-400 ring-2 ring-orange-400/40 bg-slate-800/95 scale-[1.03]' : 'border-slate-800 bg-slate-950/70 hover:border-slate-600'}">
-            <div class="h-20 rounded-xl bg-gradient-to-br ${t.grad} flex flex-col items-center justify-center p-2 mb-2 relative overflow-hidden">
-              <span class="w-6 h-6 rounded-full ${t.dot} mb-1.5 shadow-lg"></span>
-              <span class="w-14 h-2 rounded-full ${t.dot} opacity-90"></span>
-              ${active ? '<span class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-orange-400 text-slate-950 text-[9px] font-black">ON</span>' : ''}
-            </div>
-            <div class="flex items-center justify-between gap-1">
-              <p class="text-xs font-extrabold text-white truncate">#${t.id} ${t.name}</p>
-              <a href="/page.html?theme=${t.id}" target="_blank" onclick="event.stopPropagation()" class="text-[10px] font-bold text-sky-400 hover:underline shrink-0">View</a>
-            </div>
-            <p class="text-[10px] text-slate-400 truncate">${t.tag}</p>
+        const card = document.createElement('div');
+        card.className = `theme-card cursor-pointer rounded-2xl p-2.5 border ${active ? 'border-orange-400 ring-2 ring-orange-400/50 bg-slate-800' : 'border-slate-800 bg-slate-950/70'}`;
+        card.innerHTML = `
+          <div class="h-20 rounded-xl bg-gradient-to-br ${t.grad} flex flex-col items-center justify-center p-2 mb-2 relative">
+            <span class="w-6 h-6 rounded-full ${t.dot} mb-1.5"></span>
+            <span class="w-14 h-2 rounded-full ${t.dot}"></span>
+            ${active ? '<span class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-orange-400 text-slate-950 text-[9px] font-black">ON</span>' : ''}
           </div>
+          <div class="flex items-center justify-between gap-1">
+            <p class="text-xs font-extrabold text-white truncate">#${t.id} ${t.name}</p>
+            <a href="/page.html?theme=${t.id}" target="_blank" class="text-[10px] font-bold text-sky-400 underline shrink-0">View</a>
+          </div>
+          <p class="text-[10px] text-slate-400 truncate">${t.tag}</p>
         `;
-      }).join('');
+        card.addEventListener('click', (e) => {
+          if (e.target.tagName === 'A') return;
+          selectedTheme = t.id;
+          document.getElementById('selectedBadge').textContent = `Active: #${t.id} ${t.name}`;
+          document.getElementById('previewSelectedLink').href = `/page.html?theme=${t.id}`;
+          renderThemeCards();
+          showToast(`Selected Theme #${t.id}: ${t.name}`);
+        });
+        grid.appendChild(card);
+      });
     }
 
-    function selectTheme(id, name) {
-      selectedTheme = id;
-      document.getElementById('selectedBadge').textContent = `Active: #${id} ${name}`;
-      document.getElementById('previewSelectedLink').href = `/page.html?theme=${id}`;
-      renderThemeCards();
-      showPopToast(`Theme #${id} (${name}) Selected!`, 'sky');
-    }
-
-    function copyText(inputId, msg) {
-      const el = document.getElementById(inputId);
+    document.getElementById('copyPageBtn').addEventListener('click', () => {
+      const el = document.getElementById('generatedPageUrl');
       el.select();
       navigator.clipboard.writeText(el.value);
-      showPopToast(msg, 'emerald');
-    }
+      showToast('Meta Ads URL Copied!');
+    });
 
-    async function createLandingPage() {
+    document.getElementById('copyDashBtn').addEventListener('click', () => {
+      const el = document.getElementById('generatedDashUrl');
+      el.select();
+      navigator.clipboard.writeText(el.value);
+      showToast('Dashboard URL Copied!');
+    });
+
+    document.getElementById('createBtn').addEventListener('click', async () => {
+      document.getElementById('errorBanner').classList.add('hidden');
       const bot_token = document.getElementById('botToken').value.trim();
       const channel_id = document.getElementById('channelId').value.trim();
       let title = document.getElementById('title').value.trim();
@@ -312,14 +227,13 @@
       const capi_token = document.getElementById('capiToken').value.trim();
 
       if (!bot_token || !channel_id) {
-        showPopToast('Enter Bot API Token & Channel ID first!', 'amber');
+        showError('Please enter both BotFather API Token and Private Channel ID (-100...)');
         return;
       }
 
       const btn = document.getElementById('createBtn');
       btn.disabled = true;
-      btn.textContent = 'CONNECTING CHANNEL & CREATING PRIVATE LINK...';
-      showPopToast('Verifying Bot & Channel ID...', 'sky');
+      btn.textContent = 'CONNECTING TELEGRAM & SAVING...';
 
       const slug = 'vip-' + Math.random().toString(36).substring(2, 8);
       const origin = window.location.origin;
@@ -328,11 +242,9 @@
         const chatRes = await fetch(`https://api.telegram.org/bot${bot_token}/getChat?chat_id=${encodeURIComponent(channel_id)}`);
         const chatJson = await chatRes.json();
         if (!chatJson.ok) {
-          throw new Error('Bot cannot access channel! Add your Bot as Admin in ' + channel_id);
+          throw new Error('Telegram Bot Error: ' + (chatJson.description || 'Make sure your Bot is Admin in the channel!'));
         }
-        if (!title) {
-          title = chatJson.result.title || 'VIP TELEGRAM';
-        }
+        if (!title) title = chatJson.result.title || 'VIP TELEGRAM';
 
         const invRes = await fetch(`https://api.telegram.org/bot${bot_token}/createChatInviteLink`, {
           method: 'POST',
@@ -345,30 +257,55 @@
         });
         const invJson = await invRes.json();
         if (!invJson.ok || !invJson.result?.invite_link) {
-          throw new Error('Enable "Invite Users via Link" permission for your Bot in the channel!');
+          throw new Error('Invite Link Error: ' + (invJson.description || 'Enable "Invite Users via Link" permission for your Bot!'));
         }
         const autoInviteLink = invJson.result.invite_link;
 
-        const { error } = await db.from('landing_pages').insert([{
-          slug,
-          title,
-          subtitle,
-          image_url: `${origin}/api/channel-dp?id=${slug}`,
-          bot_token,
-          channel_id,
-          tg_invite_link: autoInviteLink,
-          pixel_id,
-          capi_token,
-          theme: selectedTheme
-        }]);
+        const sbRes = await fetch(`${SUPABASE_URL}/rest/v1/landing_pages`, {
+          method: 'POST',
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({
+            slug,
+            title,
+            subtitle,
+            image_url: `${origin}/api/channel-dp?id=${slug}`,
+            bot_token,
+            channel_id,
+            tg_invite_link: autoInviteLink,
+            pixel_id,
+            capi_token,
+            theme: selectedTheme
+          })
+        });
 
-        if (error) throw error;
+        if (!sbRes.ok) {
+          const errText = await sbRes.text();
+          throw new Error('Supabase Error: ' + errText);
+        }
 
         const webhookUrl = `${origin}/api/telegram-webhook?slug=${slug}`;
         await fetch(`https://api.telegram.org/bot${bot_token}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=["chat_join_request"]`);
 
-        document.getElementById('autoInfoText').textContent = `Connected to "${title}" — Live DP, Private Link & Ad-Name UTM ready!`;
+        document.getElementById('autoInfoText').textContent = `Connected to "${title}" — Theme #${selectedTheme} & Private Request Link Live!`;
         document.getElementById('generatedPageUrl').value = `${origin}/page.html?id=${slug}&utm_source=meta&utm_campaign={{campaign.name}}&utm_medium={{adset.name}}&utm_content={{ad.name}}`;
         document.getElementById('generatedDashUrl').value = `${origin}/dashboard.html?id=${slug}`;
         document.getElementById('resultBox').classList.remove('hidden');
-        document.getElementById('resultBox').scrollIntoView({
+        document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+        showToast('Page & Private Link Generated!');
+      } catch (err) {
+        showError(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'AUTO-FETCH DP & GENERATE LANDING PAGE 🚀';
+      }
+    });
+
+    renderThemeCards();
+  </script>
+</body>
+</html>
